@@ -1,46 +1,19 @@
 import Link from "next/link";
 
 const features = [
-  {
-    label: "Team Messaging",
-    tile: "bg-[#E7F2FF]",
-    ink: "text-[#2F6FE4]",
-    d: "M5 7.5A2.5 2.5 0 0 1 7.5 5h6A2.5 2.5 0 0 1 16 7.5v4A2.5 2.5 0 0 1 13.5 14H9l-3 2.5V14H7.5A2.5 2.5 0 0 1 5 11.5z"
-  },
-  {
-    label: "Online Meetings",
-    tile: "bg-[#E5F8FF]",
-    ink: "text-[#14B4D4]",
-    d: "M4.5 8.5h9.5v7H4.5zM14 10.2l5-2.2v8l-5-2.2z"
-  },
-  {
-    label: "Social Publishing",
-    tile: "bg-[#F3EAFF]",
-    ink: "text-[#8B5CF6]",
-    d: "M7 5.5h10v3H7zM6 10h12v3H6zM7.5 14.5h9v3h-9z"
-  },
-  {
-    label: "Team Collaboration",
-    tile: "bg-[#E7FBF4]",
-    ink: "text-[#14B981]",
-    d: "M9 11a2.2 2.2 0 1 0-2.2-2.2A2.2 2.2 0 0 0 9 11zm6.2.4a1.8 1.8 0 1 0-1.8-1.8 1.8 1.8 0 0 0 1.8 1.8zM4.2 17.2a4.2 4.2 0 0 1 8.2 0M12.2 17.2a3.4 3.4 0 0 1 5.6-2.6"
-  }
+  { label: "Team Messaging", tile: "bg-[#E8F3FF]", ink: "text-[#2F6FE4]", d: "M5 8h10M5 12h6M7 17l-2 3 4-2h7a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7a3 3 0 0 0 3 3z" },
+  { label: "Online Meetings", tile: "bg-[#E6F8FF]", ink: "text-[#14B4D4]", d: "M15 10l4-2v8l-4-2M5 8h10v8H5z" },
+  { label: "Social Publishing", tile: "bg-[#F4ECFF]", ink: "text-[#8B5CF6]", d: "M8 7h8v10H8zM10 10h4M10 13h4" },
+  { label: "Team Collaboration", tile: "bg-[#E8FBF4]", ink: "text-[#14B981]", d: "M12 12a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm-6 8a6 6 0 0 1 12 0" }
 ];
 
 export function HomeHero() {
   return (
-    <section className="relative h-[calc(100svh-4.75rem)] overflow-hidden bg-white">
-      <img
-        src="/brand/takiia-hero-final.jpg"
-        alt="Takiia workspace on a laptop beside a team meeting on a phone"
-        width={2560}
-        height={1440}
-        className="absolute inset-0 h-full w-full object-contain object-right"
-      />
-      <div className="relative z-10 flex h-full items-center px-6 sm:px-10 lg:px-14">
+    <section className="grid h-[calc(100svh-4.75rem)] grid-rows-[auto_minmax(0,1fr)] overflow-hidden bg-[#eef6fb] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:grid-rows-1">
+      <div className="flex items-center px-6 py-4 sm:px-10 lg:px-14">
         <div className="w-full max-w-[34rem]">
           <p className="text-[12px] font-bold uppercase tracking-[0.22em] text-[#7C93AA]">All-in-one workspace</p>
-          <h1 className="mt-3 text-[clamp(2rem,5.2vh,3.6rem)] font-black leading-[0.96] tracking-[-0.045em] text-[#0B1730]">
+          <h1 className="mt-3 text-[clamp(2rem,5.2vh,3.55rem)] font-black leading-[0.96] tracking-[-0.045em] text-[#0B1730]">
             <span className="block">Chat, Meet and</span>
             <span className="block">Manage Social Media</span>
             <span className="block bg-gradient-to-r from-[#21C6EA] to-[#3DE8B6] bg-clip-text text-transparent">All in One Place.</span>
@@ -80,6 +53,15 @@ export function HomeHero() {
             ))}
           </ul>
         </div>
+      </div>
+      <div className="relative min-h-0">
+        <img
+          src="/brand/takiia-hero-match.jpg"
+          alt="Takiia workspace on a laptop beside a team meeting on a phone"
+          width={2560}
+          height={1920}
+          className="absolute inset-0 h-full w-full object-contain object-center"
+        />
       </div>
     </section>
   );
