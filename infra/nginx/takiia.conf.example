@@ -1,0 +1,54 @@
+# Example Nginx site for Takiia only.
+# Install as a new file, for example /etc/nginx/sites-available/takiia.conf
+# Do not edit server blocks that belong to other websites.
+
+upstream takiia_web {
+    server 127.0.0.1:3034;
+}
+
+upstream takiia_api {
+    server 127.0.0.1:3033;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name takiia.com www.takiia.com;
+
+    location / {
+        proxy_pass http://takiia_web;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name api.takiia.com;
+
+    location /socket.io/ {
+        proxy_pass http://takiia_api;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location / {
+        proxy_pass http://takiia_api;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}

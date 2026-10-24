@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-pine-950 text-parchment-50 antialiased;
+  background-image:
+    radial-gradient(1200px 600px at 80% -10%, rgba(196, 106, 43, 0.16), transparent 55%),
+    radial-gradient(900px 500px at -10% 20%, rgba(110, 139, 88, 0.14), transparent 50%),
+    linear-gradient(180deg, #101814 0%, #0c120f 40%, #0c120f 100%);
+}
+
+::selection {
+  background: #c46a2b;
+  color: #f7f1e4;
+}
+
+.grid-fade {
+  background-image:
+    linear-gradient(rgba(247, 241, 228, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(247, 241, 228, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(circle at center, black 20%, transparent 80%);
+}
+
+.rule {
+  background: linear-gradient(90deg, transparent, rgba(212, 160, 74, 0.7), transparent);
+}

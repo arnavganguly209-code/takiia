@@ -1,0 +1,66 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build and cache
+dist/
+build/
+.next/
+out/
+.turbo/
+.cache/
+coverage/
+*.tsbuildinfo
+
+# Environment and secrets — never commit
+.env
+.env.*
+!.env.example
+!**/.env.example
+*.pem
+*.key
+id_rsa
+id_ed25519
+*credentials*.json
+secrets/
+.secrets/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pm2*.log
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# Test and tooling
+.nyc_output/
+playwright-report/
+test-results/
+
+# Prisma local artifacts
+apps/api/prisma/*.db
+apps/api/prisma/*.db-journal
+
+# Uploads and backups created at runtime
+uploads/
+backups/
+*.sql.gz
+dump.sql
+
+# Netlify / hosting leftovers (not used for Takiia production)
+.netlify/
+
+# Optional local override
+ecosystem.config.cjs
+infra/nginx/takiia.conf

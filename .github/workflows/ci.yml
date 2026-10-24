@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.19.4"
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Secret leak check
+        run: npm run check:secrets
+      - name: Deploy script checks
+        run: node scripts/check-deploy-scripts.mjs
+      - name: Prisma validate
+        run: npm run prisma:validate
+        env:
+          DATABASE_URL: postgresql://takiia_ci:takiia_ci@127.0.0.1:5432/takiia_ci
+      - name: Prisma generate
+        run: npm run prisma:generate
+        env:
+          DATABASE_URL: postgresql://takiia_ci:takiia_ci@127.0.0.1:5432/takiia_ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Lint
+        run: npm run lint
+      - name: Test
+        run: npm test
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: http://127.0.0.1:3033
+          NEXT_PUBLIC_SITE_URL: http://127.0.0.1:3034
+          DATABASE_URL: postgresql://takiia_ci:takiia_ci@127.0.0.1:5432/takiia_ci
+          SESSION_SECRET: CHANGE_ME_CI_SESSION_SECRET_VALUE_32
+          CSRF_SECRET: CHANGE_ME_CI_CSRF_SECRET_VALUE_32XXXX
+          WEB_ORIGIN: http://127.0.0.1:3034

@@ -1,0 +1,56 @@
+name: Production deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      git_sha:
+        description: "Exact commit SHA already validated by CI"
+        required: true
+      confirm_backup:
+        description: "Type BACKUP-VERIFIED after a successful takiia_db backup"
+        required: true
+      run_migrations:
+        description: "Set to yes only after reviewing pending Prisma migrations"
+        required: true
+        default: "no"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.git_sha }}
+
+      - name: Confirm backup acknowledgement
+        run: |
+          if [ "${{ inputs.confirm_backup }}" != "BACKUP-VERIFIED" ]; then
+            echo "Backup was not acknowledged."
+            exit 1
+          fi
+
+      - name: Verify CI success on this commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api \
+            -H "Accept: application/vnd.github+json" \
+            "/repos/${{ github.repository }}/actions/runs?head_sha=${{ inputs.git_sha }}&status=completed" \
+            --jq '.workflow_runs[] | select(.name=="CI" and .conclusion=="success") | .id' \
+            | grep -q .
+
+      - name: Deploy over SSH
+        env:
+          TAKIIA_RUN_MIGRATIONS: ${{ inputs.run_migrations }}
+        run: |
+          echo "This workflow expects GitHub environments named production with required reviewers."
+          echo "Configure repository secrets on the environment, not in this YAML:"
+          echo "  TAKIIA_DEPLOY_HOST, TAKIIA_DEPLOY_USER, TAKIIA_DEPLOY_SSH_KEY"
+          echo "The deploy user must only write /srv/apps/takiia and reload takiia-api / takiia-web."
+          if [ -z "${TAKIIA_DEPLOY_HOST:-}" ]; then
+            echo "TAKIIA_DEPLOY_HOST is not available in this environment. Stopping without deploy."
+            exit 1
+          fi
+          echo "SSH deploy is intentionally not hard-coded. Use the VPS-local remote-deploy.sh after secrets are set."
+          exit 1

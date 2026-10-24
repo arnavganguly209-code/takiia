@@ -1,0 +1,26 @@
+{
+  "name": "takiia",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Takiia workspace platform — messaging, meetings, and social scheduling.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "dev:api": "npm run dev -w @takiia/api",
+    "dev:web": "npm run dev -w @takiia/web",
+    "build": "npm run build -w @takiia/shared && npm run build -w @takiia/api && npm run build -w @takiia/web",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run build -w @takiia/shared && npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "prisma:generate": "node scripts/with-placeholder-db.mjs npm run prisma:generate -w @takiia/api",
+    "prisma:validate": "node scripts/with-placeholder-db.mjs npm run prisma:validate -w @takiia/api",
+    "check:secrets": "node scripts/check-secrets.mjs",
+    "check:deploy": "node scripts/check-deploy-scripts.mjs"
+  }
+}
