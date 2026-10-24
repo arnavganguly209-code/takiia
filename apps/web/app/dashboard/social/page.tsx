@@ -55,27 +55,27 @@ export default function DashboardSocialPage() {
   }
 
   return (
-    <section className="mx-auto max-w-3xl px-5 py-14">
-      <h1 className="font-display text-5xl">Social queue</h1>
-      <p className="mt-4 text-sm text-parchment-100/65">{note}</p>
+    <section className="py-4">
+      <h1 className="text-4xl font-semibold text-navy">Social queue</h1>
+      <p className="mt-4 text-sm text-muted">{note}</p>
       <form className="mt-8 grid gap-3" onSubmit={(event) => void queue(event)}>
-        <select name="provider" className="rounded-xl border border-white/15 bg-pine-900 px-4 py-3">
+        <select name="provider" className="field">
           <option value="facebook">Facebook</option>
           <option value="instagram">Instagram</option>
           <option value="tiktok">TikTok</option>
         </select>
-        <textarea required name="body" rows={4} className="rounded-xl border border-white/15 bg-pine-900 px-4 py-3" />
-        <input required type="datetime-local" name="scheduledFor" className="rounded-xl border border-white/15 bg-pine-900 px-4 py-3" />
-        <button className="rounded-full bg-copper-500 px-5 py-3" type="submit">
+        <textarea required name="body" rows={4} className="field" />
+        <input required type="datetime-local" name="scheduledFor" className="field" />
+        <button className="btn-primary" type="submit">
           Queue draft
         </button>
       </form>
       {posts.length === 0 ? (
-        <p className="mt-8 text-parchment-100/60">No queued posts.</p>
+        <p className="mt-8 text-muted">No queued posts.</p>
       ) : (
         <ul className="mt-8 space-y-3">
           {posts.map((post) => (
-            <li key={post.id} className="rounded-2xl border border-white/10 px-4 py-3">
+            <li key={post.id} className="glass rounded-2xl px-4 py-3">
               {post.provider} · {post.status} · {post.body}
             </li>
           ))}

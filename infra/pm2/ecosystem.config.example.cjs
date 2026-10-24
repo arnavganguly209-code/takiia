@@ -1,8 +1,15 @@
 /**
  * Example only. Copy to a VPS-local file that is not committed if you need edits.
- * Start with: pm2 start infra/pm2/ecosystem.config.example.cjs --only takiia-api
- * then:       pm2 start infra/pm2/ecosystem.config.example.cjs --only takiia-web
- * Never run pm2 restart all / reload all / delete all / save from Takiia scripts.
+ * Run exclusively as Linux user `takiia` with PM2_HOME=/home/takiia/.pm2
+ *
+ *   PM2_HOME=/home/takiia/.pm2 pm2 start infra/pm2/ecosystem.config.example.cjs --only takiia-api
+ *   PM2_HOME=/home/takiia/.pm2 pm2 start infra/pm2/ecosystem.config.example.cjs --only takiia-web
+ *
+ * Final API command is:
+ *   node --env-file=/srv/apps/takiia/apps/api/.env dist/index.js
+ *
+ * Secrets stay in the env file. This file must not contain credentials.
+ * Never target every PM2 process from Takiia scripts.
  */
 module.exports = {
   apps: [
@@ -11,6 +18,7 @@ module.exports = {
       cwd: "/srv/apps/takiia/apps/api",
       script: "dist/index.js",
       interpreter: "node",
+      node_args: "--env-file=/srv/apps/takiia/apps/api/.env",
       instances: 1,
       exec_mode: "fork",
       env: {
@@ -29,7 +37,8 @@ module.exports = {
       exec_mode: "fork",
       env: {
         NODE_ENV: "production",
-        PORT: "3034"
+        PORT: "3034",
+        HOSTNAME: "127.0.0.1"
       }
     }
   ]

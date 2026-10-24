@@ -34,27 +34,30 @@ export default function LoginPage() {
 
   return (
     <section className="mx-auto max-w-md px-5 py-16">
-      <h1 className="font-display text-5xl">Sign in</h1>
-      <p className="mt-3 text-sm text-parchment-100/70">
-        Sessions are stored as hashed tokens. Use an account created on this environment.
-      </p>
-      <form className="mt-8 grid gap-4" onSubmit={onSubmit}>
-        <label className="grid gap-2 text-sm">
-          Email
-          <input required type="email" name="email" autoComplete="email" className="rounded-xl border border-white/15 bg-pine-900 px-4 py-3" />
-        </label>
-        <label className="grid gap-2 text-sm">
-          Password
-          <input required type="password" name="password" autoComplete="current-password" className="rounded-xl border border-white/15 bg-pine-900 px-4 py-3" />
-        </label>
-        <button disabled={pending} className="rounded-full bg-copper-500 px-5 py-3 text-sm font-medium" type="submit">
-          {pending ? "Checking…" : "Enter workspace"}
-        </button>
-        {error ? <p className="text-sm text-copper-400">{error}</p> : null}
-      </form>
-      <p className="mt-6 text-sm text-parchment-100/60">
-        No account yet? <Link href="/signup" className="text-brass-300">Create one</Link>
-      </p>
+      <div className="glass rounded-3xl p-8">
+        <h1 className="text-4xl font-semibold text-navy">Log in</h1>
+        <p className="mt-3 text-sm text-muted">Sessions are stored as hashed tokens. Use an account created on this environment.</p>
+        <form className="mt-8 grid gap-4" onSubmit={onSubmit}>
+          <label className="grid gap-2 text-sm text-navy">
+            Email
+            <input required type="email" name="email" autoComplete="email" className="field" />
+          </label>
+          <label className="grid gap-2 text-sm text-navy">
+            Password
+            <input required type="password" name="password" autoComplete="current-password" className="field" />
+          </label>
+          <button disabled={pending} className="btn-primary" type="submit">
+            {pending ? "Checking…" : "Enter workspace"}
+          </button>
+          {error ? <p className="text-sm text-red-600">{error}</p> : null}
+        </form>
+        <p className="mt-6 text-sm text-muted">
+          No account yet?{" "}
+          <Link href="/signup" className="font-medium text-brand-500">
+            Get Started
+          </Link>
+        </p>
+      </div>
     </section>
   );
 }

@@ -8,7 +8,7 @@ describe("site metadata", () => {
 
   it("includes core marketing routes", () => {
     expect(nav.map((item) => item.href)).toEqual(
-      expect.arrayContaining(["/messaging", "/meetings", "/social", "/pricing"])
+      expect.arrayContaining(["/messaging", "/meetings", "/social", "/teams", "/pricing"])
     );
   });
 });

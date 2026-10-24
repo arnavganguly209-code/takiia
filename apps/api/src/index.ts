@@ -4,6 +4,7 @@ import { loadEnv } from "./env.js";
 import { createSocketServer } from "./socket.js";
 
 const env = loadEnv();
+// Production secrets come from `node --env-file=apps/api/.env` in the Takiia PM2 process.
 const httpServer = createServer();
 const io = createSocketServer(httpServer, env);
 const app = createApp(env, io);

@@ -24,6 +24,7 @@ export function plansRouter(env: ApiEnv) {
               scheduledPostsPerMonth: plan.limits.scheduledPostsPerMonth,
               storageMb: plan.limits.storageMb,
               meetingsPerMonth: plan.limits.meetingsPerMonth,
+              proposedMonthlyUsd: plan.proposedMonthlyUsd,
               source: "catalog-fallback"
             })),
         payments: {
@@ -42,6 +43,7 @@ export function plansRouter(env: ApiEnv) {
           scheduledPostsPerMonth: plan.limits.scheduledPostsPerMonth,
           storageMb: plan.limits.storageMb,
           meetingsPerMonth: plan.limits.meetingsPerMonth,
+          proposedMonthlyUsd: plan.proposedMonthlyUsd,
           source: "catalog-fallback"
         })),
         payments: {

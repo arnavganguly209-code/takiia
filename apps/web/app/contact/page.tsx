@@ -35,42 +35,38 @@ export default function ContactPage() {
 
   return (
     <section className="mx-auto max-w-xl px-5 py-16">
-      <p className="text-xs uppercase tracking-[0.28em] text-brass-400">Contact</p>
-      <h1 className="mt-4 font-display text-5xl">Write to Takiia</h1>
-      <p className="mt-4 text-parchment-100/70">
+      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-500">Contact</p>
+      <h1 className="mt-4 text-5xl font-semibold text-navy">Write to Takiia</h1>
+      <p className="mt-4 text-muted">
         Inquiries are stored in the database. Email delivery is reported honestly from the API feature flags.
       </p>
       <form className="mt-8 grid gap-4" onSubmit={onSubmit}>
-        <label className="grid gap-2 text-sm">
+        <label className="grid gap-2 text-sm text-navy">
           Name
-          <input required name="name" className="rounded-xl border border-white/15 bg-pine-900 px-4 py-3" />
+          <input required name="name" className="field" />
         </label>
-        <label className="grid gap-2 text-sm">
+        <label className="grid gap-2 text-sm text-navy">
           Email
-          <input required type="email" name="email" className="rounded-xl border border-white/15 bg-pine-900 px-4 py-3" />
+          <input required type="email" name="email" className="field" />
         </label>
-        <label className="grid gap-2 text-sm">
+        <label className="grid gap-2 text-sm text-navy">
           Topic
-          <select name="topic" className="rounded-xl border border-white/15 bg-pine-900 px-4 py-3">
+          <select name="topic" className="field">
             <option value="sales">Sales</option>
             <option value="support">Support</option>
             <option value="security">Security</option>
             <option value="other">Other</option>
           </select>
         </label>
-        <label className="grid gap-2 text-sm">
+        <label className="grid gap-2 text-sm text-navy">
           Message
-          <textarea required minLength={10} name="message" rows={6} className="rounded-xl border border-white/15 bg-pine-900 px-4 py-3" />
+          <textarea required minLength={10} name="message" rows={6} className="field" />
         </label>
-        <button
-          disabled={pending}
-          className="rounded-full bg-copper-500 px-5 py-3 text-sm font-medium disabled:opacity-60"
-          type="submit"
-        >
+        <button disabled={pending} className="btn-primary disabled:opacity-60" type="submit">
           {pending ? "Saving…" : "Send inquiry"}
         </button>
-        {status ? <p className="text-sm text-fern-400">{status}</p> : null}
-        {error ? <p className="text-sm text-copper-400">{error}</p> : null}
+        {status ? <p className="text-sm text-brand-500">{status}</p> : null}
+        {error ? <p className="text-sm text-red-600">{error}</p> : null}
       </form>
     </section>
   );

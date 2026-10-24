@@ -1,6 +1,8 @@
 # Example Nginx site for Takiia only.
 # Install as a new file, for example /etc/nginx/sites-available/takiia.conf
 # Do not edit server blocks that belong to other websites.
+# TLS certificates should be added later with a Takiia-only certbot run.
+# This file is not activated by repository scripts.
 
 upstream takiia_web {
     server 127.0.0.1:3034;

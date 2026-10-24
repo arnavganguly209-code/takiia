@@ -7,6 +7,7 @@ const paths = [
   "/messaging",
   "/meetings",
   "/social",
+  "/teams",
   "/pricing",
   "/security",
   "/privacy",

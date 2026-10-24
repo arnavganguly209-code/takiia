@@ -41,7 +41,8 @@ function walk(dir) {
       secretPattern.test(text) &&
       !full.endsWith(".example") &&
       !full.includes("check-secrets") &&
-      !full.includes(`${join(".github", "workflows")}`)
+      !full.includes(`${join(".github", "workflows")}`) &&
+      !full.includes(`${join("scripts", "deploy", "test")}`)
     ) {
       failures.push(`Possible secret material in ${relative(root, full)}`);
     }

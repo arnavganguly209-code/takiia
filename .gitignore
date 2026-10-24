@@ -18,6 +18,9 @@ coverage/
 .env.*
 !.env.example
 !**/.env.example
+apps/api/.env
+apps/web/.env
+apps/web/.env.production
 *.pem
 *.key
 id_rsa
@@ -57,6 +60,7 @@ uploads/
 backups/
 *.sql.gz
 dump.sql
+/var/backups/
 
 # Netlify / hosting leftovers (not used for Takiia production)
 .netlify/

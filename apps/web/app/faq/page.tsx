@@ -5,22 +5,27 @@ export const metadata: Metadata = { title: "FAQ" };
 
 const faqs = [
   ["What is Takiia?", "A workspace for team messaging, meeting records, and social scheduling."],
-  ["Does it send WhatsApp messages?", "No. Messaging is native to the workspace."],
-  ["Can I publish to Instagram today?", "Only after Meta credentials and app review are configured. Until then posts queue locally."],
-  ["Are video meetings production-ready?", "Scheduling is. Media is not claimed until TURN or LiveKit is verified."],
-  ["How do payments work?", "Plan records exist. Checkout returns unconfigured until a provider is wired and tested."],
-  ["Where does data live?", "In the Takiia PostgreSQL database. Local development must use a separate database."]
+  ["Can I manage messages and social posts in one dashboard?", "Yes. Those surfaces share the signed-in workspace."],
+  ["Which social platforms are supported?", "Facebook, Instagram, and TikTok are modeled. Live publishing needs official credentials."],
+  ["Does every platform support automatic publishing?", "No. Each official API has its own rules and review process."],
+  ["Can I create teams and group conversations?", "Yes. Workspaces, roles, and group conversations are implemented."],
+  ["How do meetings work?", "Scheduling is available. Live media is not claimed until TURN or LiveKit is verified."],
+  ["What happens when my plan limit is reached?", "The API rejects the extra action and the UI should offer an upgrade path."],
+  ["Can I change or cancel a subscription?", "Plan records exist. Checkout stays pending until a payment provider is configured."],
+  ["Are WhatsApp Business messages included?", "No. Messaging is native to the workspace."],
+  ["Is audio/video recording included?", "No. Recording is a separately configurable feature and is off."],
+  ["How are customer files and social tokens protected?", "Downloads are authenticated. Tokens stay on the server."]
 ];
 
 export default function FaqPage() {
   return (
     <>
       <PageHero eyebrow="FAQ" title="Direct answers." lede="No invented customer counts. No assumed provider approvals." />
-      <section className="mx-auto max-w-3xl space-y-4 px-5 pb-24">
+      <section className="mx-auto max-w-3xl space-y-3 px-5 pb-24">
         {faqs.map(([q, a]) => (
-          <details key={q} className="rounded-2xl border border-white/10 bg-pine-900/40 p-5">
-            <summary className="cursor-pointer font-medium">{q}</summary>
-            <p className="mt-3 text-sm leading-7 text-parchment-100/70">{a}</p>
+          <details key={q} className="glass rounded-2xl p-5">
+            <summary className="cursor-pointer font-medium text-navy">{q}</summary>
+            <p className="mt-3 text-sm leading-7 text-muted">{a}</p>
           </details>
         ))}
       </section>

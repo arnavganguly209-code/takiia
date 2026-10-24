@@ -5,37 +5,34 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        pine: {
-          950: "#0c120f",
-          900: "#121a16",
-          800: "#1b2720",
-          700: "#2a3b31"
+        paper: "#FFFFFF",
+        mist: "#F6FAFF",
+        ink: "#17243A",
+        navy: "#173B70",
+        muted: "#62718A",
+        line: "#E4EBF4",
+        pale: "#EAF3FF",
+        mintsoft: "#E8FFF6",
+        brand: {
+          500: "#2563EB",
+          600: "#1D4ED8"
         },
-        parchment: {
-          50: "#f7f1e4",
-          100: "#efe4cf",
-          200: "#e2d0ae"
+        cyan: {
+          400: "#22C7E8"
         },
-        copper: {
-          400: "#e08a4d",
-          500: "#c46a2b",
-          600: "#9e4f1c"
-        },
-        brass: {
-          300: "#e6c37a",
-          400: "#d4a04a"
-        },
-        fern: {
-          400: "#8eae79",
-          500: "#6d8b58"
+        mint: {
+          400: "#67E8C5"
         }
       },
       fontFamily: {
-        display: ["var(--font-display)", "Georgia", "serif"],
-        sans: ["var(--font-sans)", "system-ui", "sans-serif"]
+        sans: ["var(--font-sans)", "Inter", "system-ui", "sans-serif"]
       },
       boxShadow: {
-        insetcard: "inset 0 1px 0 rgba(247,241,228,0.08)"
+        glass: "0 18px 50px rgba(23, 59, 112, 0.08)",
+        soft: "0 10px 30px rgba(23, 59, 112, 0.06)"
+      },
+      backgroundImage: {
+        hero: "radial-gradient(circle at 18% 12%, rgba(34,199,232,0.16), transparent 34%), radial-gradient(circle at 88% 8%, rgba(103,232,197,0.16), transparent 32%), linear-gradient(180deg, #FFFFFF 0%, #F6FAFF 100%)"
       }
     }
   },

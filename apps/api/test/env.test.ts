@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { featureFlagsFromEnv, loadEnv } from "../src/env.js";
+import { featureFlagsFromEnv, loadEnv, webOrigins } from "../src/env.js";
 import { testEnv } from "../src/test-app.js";
 
 describe("loadEnv", () => {
@@ -29,6 +29,11 @@ describe("loadEnv", () => {
         WEB_ORIGIN: "https://takiia.com"
       })
     ).toThrow(/127.0.0.1/);
+  });
+
+  it("allows the www origin for the production site", () => {
+    const origins = webOrigins(testEnv({ WEB_ORIGIN: "https://takiia.com" }));
+    expect(origins).toEqual(expect.arrayContaining(["https://takiia.com", "https://www.takiia.com"]));
   });
 
   it("keeps payment flag false without credentials", () => {

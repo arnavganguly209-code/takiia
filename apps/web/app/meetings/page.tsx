@@ -8,25 +8,21 @@ export default function MeetingsPage() {
     <>
       <PageHero
         eyebrow="Meetings"
-        title="Schedule first. Media when the path is real."
-        lede="You can create meetings, store participants, and attempt a join. Voice and video do not claim success without TURN or LiveKit."
+        title="Bring everyone together, wherever they work."
+        lede="Scheduling, participants, and join records are implemented. Production WebRTC calling is not claimed until TURN or LiveKit is configured and tested."
       />
-      <section className="mx-auto grid max-w-4xl gap-6 px-5 pb-24">
-        <article className="rounded-3xl border border-dashed border-brass-400/40 bg-pine-900/40 p-8">
-          <h2 className="font-display text-3xl">Current foundation</h2>
-          <ul className="mt-4 list-disc space-y-2 pl-5 text-parchment-100/75">
-            <li>Meeting records with start time, status, and workspace scope.</li>
-            <li>Join endpoint that records attendance.</li>
-            <li>Unconfigured media returns HTTP 409 instead of a fake call.</li>
-          </ul>
-        </article>
-        <article className="rounded-3xl border border-white/10 p-8">
-          <h2 className="font-display text-3xl">Not claimed yet</h2>
-          <p className="mt-3 text-parchment-100/70">
-            Group rooms, screen sharing, and production TURN routing stay behind feature flags until those providers
-            are configured and tested on a real network.
-          </p>
-        </article>
+      <section className="mx-auto grid max-w-7xl gap-5 px-5 pb-24 md:grid-cols-2">
+        {[
+          ["Available", "Create meetings, invite participants, apply plan limits, and keep events on the workspace calendar."],
+          ["Planned", "Mute, camera, screen share, device selection, and group media routing wait on a verified media path."],
+          ["Recording", "Recording and transcription are separate configurable features and are off."],
+          ["Honesty", "A join button that cannot complete media setup is treated as incomplete, not as a live Zoom replacement."]
+        ].map(([title, body]) => (
+          <article key={title} className="glass rounded-3xl p-6">
+            <h2 className="text-xl font-semibold text-navy">{title}</h2>
+            <p className="mt-3 leading-7 text-muted">{body}</p>
+          </article>
+        ))}
       </section>
     </>
   );

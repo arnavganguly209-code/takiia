@@ -36,33 +36,38 @@ export default function SignupPage() {
 
   return (
     <section className="mx-auto max-w-md px-5 py-16">
-      <h1 className="font-display text-5xl">Create a workspace</h1>
-      <p className="mt-3 text-sm text-parchment-100/70">Password must be at least 12 characters and include a letter and a number.</p>
-      <form className="mt-8 grid gap-4" onSubmit={onSubmit}>
-        <label className="grid gap-2 text-sm">
-          Your name
-          <input required name="displayName" autoComplete="name" className="rounded-xl border border-white/15 bg-pine-900 px-4 py-3" />
-        </label>
-        <label className="grid gap-2 text-sm">
-          Workspace name
-          <input name="workspaceName" className="rounded-xl border border-white/15 bg-pine-900 px-4 py-3" />
-        </label>
-        <label className="grid gap-2 text-sm">
-          Email
-          <input required type="email" name="email" autoComplete="email" className="rounded-xl border border-white/15 bg-pine-900 px-4 py-3" />
-        </label>
-        <label className="grid gap-2 text-sm">
-          Password
-          <input required type="password" name="password" autoComplete="new-password" className="rounded-xl border border-white/15 bg-pine-900 px-4 py-3" />
-        </label>
-        <button disabled={pending} className="rounded-full bg-copper-500 px-5 py-3 text-sm font-medium" type="submit">
-          {pending ? "Creating…" : "Create account"}
-        </button>
-        {error ? <p className="text-sm text-copper-400">{error}</p> : null}
-      </form>
-      <p className="mt-6 text-sm text-parchment-100/60">
-        Already registered? <Link href="/login" className="text-brass-300">Sign in</Link>
-      </p>
+      <div className="glass rounded-3xl p-8">
+        <h1 className="text-4xl font-semibold text-navy">Get Started</h1>
+        <p className="mt-3 text-sm text-muted">Password must be at least 12 characters and include a letter and a number.</p>
+        <form className="mt-8 grid gap-4" onSubmit={onSubmit}>
+          <label className="grid gap-2 text-sm text-navy">
+            Your name
+            <input required name="displayName" autoComplete="name" className="field" />
+          </label>
+          <label className="grid gap-2 text-sm text-navy">
+            Workspace name
+            <input name="workspaceName" className="field" />
+          </label>
+          <label className="grid gap-2 text-sm text-navy">
+            Email
+            <input required type="email" name="email" autoComplete="email" className="field" />
+          </label>
+          <label className="grid gap-2 text-sm text-navy">
+            Password
+            <input required type="password" name="password" autoComplete="new-password" className="field" />
+          </label>
+          <button disabled={pending} className="btn-primary" type="submit">
+            {pending ? "Creating…" : "Create account"}
+          </button>
+          {error ? <p className="text-sm text-red-600">{error}</p> : null}
+        </form>
+        <p className="mt-6 text-sm text-muted">
+          Already registered?{" "}
+          <Link href="/login" className="font-medium text-brand-500">
+            Log in
+          </Link>
+        </p>
+      </div>
     </section>
   );
 }

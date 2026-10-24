@@ -54,22 +54,22 @@ export default function DashboardMeetingsPage() {
   }
 
   return (
-    <section className="mx-auto max-w-3xl px-5 py-14">
-      <h1 className="font-display text-5xl">Meetings</h1>
-      <p className="mt-4 text-sm text-parchment-100/65">{note}</p>
+    <section className="py-4">
+      <h1 className="text-4xl font-semibold text-navy">Meetings</h1>
+      <p className="mt-4 text-sm text-muted">{note}</p>
       <form className="mt-8 grid gap-3 md:grid-cols-[1fr_1fr_auto]" onSubmit={(event) => void create(event)}>
-        <input required name="title" placeholder="Title" className="rounded-xl border border-white/15 bg-pine-900 px-4 py-3" />
-        <input required type="datetime-local" name="startsAt" className="rounded-xl border border-white/15 bg-pine-900 px-4 py-3" />
-        <button className="rounded-full bg-copper-500 px-5" type="submit">
+        <input required name="title" placeholder="Title" className="field" />
+        <input required type="datetime-local" name="startsAt" className="field" />
+        <button className="btn-primary" type="submit">
           Schedule
         </button>
       </form>
       {meetings.length === 0 ? (
-        <p className="mt-8 text-parchment-100/60">No meetings scheduled.</p>
+        <p className="mt-8 text-muted">No meetings scheduled.</p>
       ) : (
         <ul className="mt-8 space-y-3">
           {meetings.map((meeting) => (
-            <li key={meeting.id} className="rounded-2xl border border-white/10 px-4 py-3">
+            <li key={meeting.id} className="glass rounded-2xl px-4 py-3">
               {meeting.title} · {meeting.status} · {new Date(meeting.startsAt).toLocaleString()}
             </li>
           ))}

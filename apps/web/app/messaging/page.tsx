@@ -8,18 +8,21 @@ export default function MessagingPage() {
     <>
       <PageHero
         eyebrow="Messaging"
-        title="Workspace chat that belongs to you."
-        lede="Takiia messaging is built-in. It is not a WhatsApp connector and it does not proxy another chat network."
+        title="Conversations that keep work moving."
+        lede="Takiia messaging is built-in. It is not a WhatsApp connector and it does not send WhatsApp Business messages."
       />
-      <section className="mx-auto max-w-6xl columns-1 gap-5 px-5 pb-24 md:columns-2">
+      <section className="mx-auto grid max-w-7xl gap-5 px-5 pb-24 md:grid-cols-2">
         {[
-          "Direct and group conversations scoped to a workspace.",
-          "Messages persist with author, timestamps, and membership checks.",
-          "Socket.IO rooms exist for live delivery after a session is verified.",
-          "Attachments are modeled with size and storage keys; downloads stay authenticated.",
-          "Search and presence can be added without inventing delivery guarantees."
+          "One-to-one and group conversations scoped to a workspace.",
+          "History, pagination, timestamps, and membership-checked reads.",
+          "Unread counts and conversation filtering.",
+          "Authenticated attachments with type and size checks.",
+          "Block, report, and in-app notifications.",
+          "Socket.IO rooms deliver live messages only after a verified session.",
+          "Presence and typing indicators depend on an active socket connection.",
+          "Responsive desktop and mobile inbox layouts."
         ].map((text) => (
-          <p key={text} className="mb-5 break-inside-avoid rounded-3xl border border-white/10 bg-pine-800/40 p-6">
+          <p key={text} className="glass rounded-3xl p-6 leading-7 text-muted">
             {text}
           </p>
         ))}

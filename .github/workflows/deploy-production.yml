@@ -1,3 +1,5 @@
+# Manual only. Do not enable push or pull_request triggers.
+# This workflow is not used until the production environment secrets exist.
 name: Production deploy
 
 on:

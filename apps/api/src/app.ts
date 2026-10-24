@@ -3,7 +3,7 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import type { Server as SocketServer } from "socket.io";
-import type { ApiEnv } from "./env.js";
+import { webOrigins, type ApiEnv } from "./env.js";
 import { createAuthRequired } from "./middleware/auth.js";
 import { authLimiter, writeLimiter } from "./middleware/rate-limit.js";
 import { createCsrfGuard } from "./middleware/security.js";
@@ -30,7 +30,7 @@ export function createApp(env: ApiEnv, io: SocketServer) {
   );
   app.use(
     cors({
-      origin: [env.WEB_ORIGIN, "http://localhost:3034"],
+      origin: webOrigins(env),
       credentials: true
     })
   );

@@ -56,7 +56,7 @@ export default function DashboardPage() {
         title="Dashboard unavailable"
         body={error}
         action={
-          <Link href="/login" className="text-brass-300">
+          <Link href="/login" className="font-medium text-brand-500">
             Sign in
           </Link>
         }
@@ -65,14 +65,14 @@ export default function DashboardPage() {
   }
 
   return (
-    <section className="mx-auto max-w-5xl px-5 py-14">
+    <section className="py-4">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs uppercase tracking-[0.24em] text-brass-400">Dashboard</p>
-          <h1 className="mt-3 font-display text-5xl">{user?.displayName}</h1>
-          <p className="mt-2 text-sm text-parchment-100/60">{user?.email}</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-500">Overview</p>
+          <h1 className="mt-3 text-4xl font-semibold text-navy">{user?.displayName}</h1>
+          <p className="mt-2 text-sm text-muted">{user?.email}</p>
         </div>
-        <button type="button" onClick={() => void logout()} className="text-sm text-parchment-100/70">
+        <button type="button" onClick={() => void logout()} className="text-sm text-muted">
           Sign out
         </button>
       </div>
@@ -81,15 +81,15 @@ export default function DashboardPage() {
         <DashLink href="/dashboard/meetings" title="Meetings" body="Scheduled records. Media stays gated." />
         <DashLink href="/dashboard/social" title="Social queue" body="Drafts stored until providers connect." />
       </div>
-      <h2 className="mt-12 font-display text-3xl">Workspaces</h2>
+      <h2 className="mt-12 text-3xl font-semibold text-navy">Workspaces</h2>
       {workspaces.length === 0 ? (
-        <p className="mt-4 text-parchment-100/60">No workspaces yet.</p>
+        <p className="mt-4 text-muted">No workspaces yet.</p>
       ) : (
         <ul className="mt-5 grid gap-4">
           {workspaces.map((workspace) => (
-            <li key={workspace.id} className="rounded-2xl border border-white/10 bg-pine-900/50 p-5">
-              <p className="font-medium">{workspace.name}</p>
-              <p className="mt-1 text-sm text-parchment-100/60">
+            <li key={workspace.id} className="glass rounded-2xl p-5">
+              <p className="font-medium text-navy">{workspace.name}</p>
+              <p className="mt-1 text-sm text-muted">
                 {workspace.role} · {workspace.memberCount} members · {workspace.conversationCount} conversations
                 {workspace.plan ? ` · ${workspace.plan.name} (${workspace.plan.status})` : ""}
               </p>
@@ -103,9 +103,9 @@ export default function DashboardPage() {
 
 function DashLink({ href, title, body }: { href: string; title: string; body: string }) {
   return (
-    <Link href={href} className="rounded-2xl border border-white/10 p-5 hover:border-brass-400">
-      <h2 className="font-display text-2xl">{title}</h2>
-      <p className="mt-2 text-sm text-parchment-100/65">{body}</p>
+    <Link href={href} className="glass rounded-2xl p-5 hover:border-brand-500">
+      <h2 className="text-2xl font-semibold text-navy">{title}</h2>
+      <p className="mt-2 text-sm text-muted">{body}</p>
     </Link>
   );
 }
@@ -121,8 +121,8 @@ function EmptyState({
 }) {
   return (
     <section className="mx-auto max-w-lg px-5 py-24 text-center">
-      <h1 className="font-display text-4xl">{title}</h1>
-      <p className="mt-4 text-parchment-100/70">{body}</p>
+      <h1 className="text-4xl font-semibold text-navy">{title}</h1>
+      <p className="mt-4 text-muted">{body}</p>
       {action ? <div className="mt-6">{action}</div> : null}
     </section>
   );

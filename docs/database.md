@@ -13,6 +13,8 @@ Takiia uses PostgreSQL through Prisma. Production and development are separate.
 
 Never copy the production `DATABASE_URL` into this repository, GitHub variables, or a laptop `.env`.
 
+Production dumps belong in `/var/backups/takiia`. Use `scripts/backup/takiia-db-backup.sh`, which parses the API env file without printing secrets and refuses any database other than `takiia_db`.
+
 ## Local development
 
 Create a dedicated database, for example:

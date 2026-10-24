@@ -64,6 +64,14 @@ export function loadEnv(source: NodeJS.ProcessEnv = process.env): ApiEnv {
   return env;
 }
 
+export function webOrigins(env: ApiEnv): string[] {
+  const origins = new Set<string>([env.WEB_ORIGIN, "http://127.0.0.1:3034", "http://localhost:3034"]);
+  if (env.WEB_ORIGIN === "https://takiia.com") {
+    origins.add("https://www.takiia.com");
+  }
+  return [...origins];
+}
+
 export function featureFlagsFromEnv(env: ApiEnv) {
   return {
     payments: Boolean(env.PAYMENTS_ENABLED && env.STRIPE_SECRET_KEY),

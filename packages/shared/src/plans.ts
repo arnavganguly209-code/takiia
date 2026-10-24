@@ -11,11 +11,12 @@ export type PlanLimits = {
 
 export const defaultPlanCatalog: Record<
   PlanKey,
-  { name: string; description: string; limits: PlanLimits }
+  { name: string; description: string; proposedMonthlyUsd: number; limits: PlanLimits }
 > = {
   starter: {
     name: "Starter",
     description: "Small teams starting with workspace chat and a light publishing queue.",
+    proposedMonthlyUsd: 9,
     limits: {
       members: 5,
       socialAccounts: 2,
@@ -27,6 +28,7 @@ export const defaultPlanCatalog: Record<
   pro: {
     name: "Pro",
     description: "Growing teams that need more seats, storage, and scheduled posts.",
+    proposedMonthlyUsd: 19,
     limits: {
       members: 20,
       socialAccounts: 6,
@@ -38,6 +40,7 @@ export const defaultPlanCatalog: Record<
   business: {
     name: "Business",
     description: "Multi-team workspaces with higher quotas and admin controls.",
+    proposedMonthlyUsd: 49,
     limits: {
       members: 75,
       socialAccounts: 20,
@@ -49,6 +52,7 @@ export const defaultPlanCatalog: Record<
   agency: {
     name: "Agency",
     description: "Agencies managing multiple client workspaces and publishing queues.",
+    proposedMonthlyUsd: 99,
     limits: {
       members: 200,
       socialAccounts: 60,
