@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { SiteFooter } from "@/components/SiteFooter";
-import { SiteHeader } from "@/components/SiteHeader";
+import { SiteChrome } from "@/components/SiteChrome";
+import { SiteProvider } from "@/components/SiteProvider";
 import { site } from "@/lib/site";
+import { readSiteContent } from "@/lib/site-store";
 import "./globals.css";
 
 const sans = Inter({
   subsets: ["latin"],
   variable: "--font-sans"
 });
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -24,10 +27,17 @@ export const metadata: Metadata = {
     siteName: site.name,
     type: "website",
     images: [{ url: "/brand/takiia-hero.jpg" }]
+  },
+  robots: {
+    googleBot: {
+      index: true,
+      follow: true
+    }
   }
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const content = await readSiteContent();
   return (
     <html lang="en">
       <body className={`${sans.variable} font-sans`}>
@@ -37,9 +47,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        <SiteHeader />
-        <main id="main">{children}</main>
-        <SiteFooter />
+        <SiteProvider initial={content}>
+          <SiteChrome>{children}</SiteChrome>
+        </SiteProvider>
       </body>
     </html>
   );

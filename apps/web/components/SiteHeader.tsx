@@ -3,20 +3,21 @@
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { Logo } from "./Logo";
-import { nav, productLinks, resourceLinks } from "@/lib/site";
+import { useSite } from "./SiteProvider";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const site = useSite();
 
   return (
     <header className="sticky top-0 z-40 bg-white/70 px-3 pb-3 pt-3 backdrop-blur-xl">
       <div className="header-glass mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-5">
-        <Link href="/" aria-label="Takiia home" className="shrink-0">
+        <Link href="/" aria-label={`${site.brand.name} home`} className="shrink-0">
           <Logo />
         </Link>
         <nav className="hidden items-center gap-1 text-[15px] font-bold tracking-[-0.01em] text-[#0B1730] xl:flex" aria-label="Primary">
-          <Dropdown label="Product" items={productLinks} />
-          {nav.map((item) => (
+          <Dropdown label={site.header.productLabel} items={site.header.product} />
+          {site.header.nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -25,14 +26,14 @@ export function SiteHeader() {
               {item.label}
             </Link>
           ))}
-          <Dropdown label="Resources" items={resourceLinks} />
+          <Dropdown label={site.header.resourcesLabel} items={site.header.resources} />
         </nav>
         <div className="hidden items-center gap-3 xl:flex">
           <Link href="/login" className="text-[15px] font-bold text-[#0B1730]">
-            Log in
+            {site.header.loginLabel}
           </Link>
-          <Link href="/signup" className="btn-primary">
-            Get Started
+          <Link href={site.header.ctaHref} className="btn-primary">
+            {site.header.ctaLabel}
           </Link>
         </div>
         <button
@@ -51,7 +52,7 @@ export function SiteHeader() {
           className="header-glass-panel mx-auto mt-2 grid max-w-7xl gap-2 px-5 py-4 xl:hidden"
           aria-label="Mobile"
         >
-          {[...productLinks, ...nav, ...resourceLinks, { href: "/login", label: "Log in" }, { href: "/signup", label: "Get Started" }].map(
+          {[...site.header.product, ...site.header.nav, ...site.header.resources, { href: "/login", label: site.header.loginLabel }, { href: site.header.ctaHref, label: site.header.ctaLabel }].map(
             (item) => (
               <Link
                 key={`${item.href}-${item.label}`}

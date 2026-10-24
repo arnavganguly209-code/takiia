@@ -130,10 +130,12 @@ trap cleanup EXIT
     "LIVEKIT_MEETINGS_ENABLED=false"
 } > "$api_tmp"
 
-cat > "$web_tmp" <<'EOF'
-NEXT_PUBLIC_API_URL=https://api.takiia.com
-NEXT_PUBLIC_SITE_URL=https://takiia.com
-EOF
+orbit_session="$(openssl rand -hex 32)"
+{
+  printf '%s\n' "NEXT_PUBLIC_API_URL=https://api.takiia.com" "NEXT_PUBLIC_SITE_URL=https://takiia.com"
+  printf '%s\n' "TAKIIA_SITE_DATA_DIR=/srv/apps/takiia/data" "ORBIT_PASSKEY="
+  printf 'ORBIT_SESSION_SECRET="%s"\n' "$orbit_session"
+} > "$web_tmp"
 
 chown "$APP_USER:$APP_USER" "$api_tmp" "$web_tmp"
 chmod 600 "$api_tmp" "$web_tmp"

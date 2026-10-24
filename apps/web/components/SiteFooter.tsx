@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { Logo } from "./Logo";
+import { useSite } from "./SiteProvider";
 
 const columns = [
   {
@@ -46,17 +49,15 @@ const legalLinks = [
 ] as const;
 
 export function SiteFooter() {
+  const site = useSite();
   return (
     <footer className="border-t border-line bg-white">
       <div className="site-wrap grid gap-12 py-16 md:grid-cols-2 xl:grid-cols-6">
         <div className="xl:col-span-2">
           <Logo />
-          <p className="mt-4 max-w-sm text-sm leading-7 text-muted">
-            Takiia brings messaging, meetings, team collaboration and social publishing together in one organized
-            workspace.
-          </p>
-          <Link href="/signup" className="btn-primary mt-6 px-5 py-2.5">
-            Get Started
+          <p className="mt-4 max-w-sm text-sm leading-7 text-muted">{site.footer.blurb}</p>
+          <Link href={site.footer.ctaHref} className="btn-primary mt-6 px-5 py-2.5">
+            {site.footer.ctaLabel}
           </Link>
         </div>
         {columns.map((group) => (

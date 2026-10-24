@@ -56,6 +56,9 @@ apps/api/prisma/*.db
 apps/api/prisma/*.db-journal
 
 # Uploads and backups created at runtime
+data/site.json
+data/uploads/
+apps/web/data/
 uploads/
 backups/
 *.sql.gz
