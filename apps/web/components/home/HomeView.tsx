@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { defaultPlanCatalog } from "@takiia/shared";
 import { defaultSiteContent, type SiteContent, type SiteSection } from "@/lib/site-content";
-import { FeatureCards } from "./FeatureCards";
 import { HomeHero } from "./HomeHero";
 import {
   AdsPreview,
@@ -15,7 +14,9 @@ import {
   WorkflowPreview,
   WorkspacePreview
 } from "./Previews";
-import { LineIcon, Section } from "./Section";
+import { LineIcon, ProductBand, Section } from "./Section";
+
+export type PlatformService = { id: string; name: string; state: string; note: string };
 
 const capabilityIcons = [
   "M5 8h10M5 12h6M7 17l-2 3 4-2h7a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7a3 3 0 0 0 3 3z",
@@ -46,7 +47,13 @@ function SectionImage({ src }: { src?: string }) {
   return <img src={src} alt="" className="mb-10 h-[22rem] w-full rounded-[2rem] object-cover shadow-glass sm:h-[28rem]" />;
 }
 
-export function HomeView({ content = defaultSiteContent }: { content?: SiteContent }) {
+export function HomeView({
+  content = defaultSiteContent,
+  services = []
+}: {
+  content?: SiteContent;
+  services?: PlatformService[];
+}) {
   const s = content.sections;
   return (
     <div>
@@ -69,21 +76,34 @@ export function HomeView({ content = defaultSiteContent }: { content?: SiteConte
         </div>
       </section>
 
+      {services.length ? (
+        <section className="border-b border-line bg-white">
+          <div className="site-wrap grid gap-3 py-6 md:grid-cols-5">
+            {services.map((service) => (
+              <div key={service.id} className="rounded-2xl border border-line px-4 py-3">
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#7C93AA]">{service.state}</p>
+                <p className="mt-1 font-bold text-navy">{service.name}</p>
+                <p className="mt-1 text-xs leading-5 text-muted">{service.note}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
       <Section id="why" eyebrow={s.why.eyebrow} title={s.why.title} copy={s.why.copy}>
         <SectionImage src={s.why.imageSrc} />
-        <div className="grid gap-5 md:grid-cols-3">
+        <ol className="divide-y divide-line overflow-hidden rounded-[1.6rem] border border-line bg-white">
           {s.why.cards.map((item, index) => (
-            <article
-              key={item.title}
-              className={`card-hover rounded-[1.6rem] border border-line p-7 ${index === 0 ? "bg-pale" : index === 2 ? "bg-mintsoft" : "bg-white"}`}
-            >
-              <p className="text-sm font-bold text-transparent bg-gradient-to-r from-cyan-400 to-mint-400 bg-clip-text">0{index + 1}</p>
-              <h3 className="mt-3 text-xl font-bold text-navy">{item.title}</h3>
-              <p className="mt-3 text-sm leading-7 text-muted">{item.body}</p>
-            </article>
+            <li key={item.title} className="grid gap-3 px-6 py-6 sm:grid-cols-[4rem_1fr] sm:items-start">
+              <span className="text-sm font-black text-transparent bg-gradient-to-r from-cyan-400 to-mint-400 bg-clip-text">0{index + 1}</span>
+              <div>
+                <h3 className="text-lg font-bold text-navy">{item.title}</h3>
+                <p className="mt-2 text-sm leading-7 text-muted">{item.body}</p>
+              </div>
+            </li>
           ))}
-        </div>
-        {s.why.note ? <p className="mt-8 text-sm leading-7 text-muted">{s.why.note}</p> : null}
+        </ol>
+        {s.why.note ? <p className="mt-6 text-sm leading-7 text-muted">{s.why.note}</p> : null}
       </Section>
 
       <Section id="workspace" tone="mist" eyebrow={s.workspace.eyebrow} title={s.workspace.title} copy={s.workspace.copy}>
@@ -91,45 +111,21 @@ export function HomeView({ content = defaultSiteContent }: { content?: SiteConte
         <WorkspacePreview />
       </Section>
 
-      <Section id="messaging" eyebrow={s.messaging.eyebrow} title={s.messaging.title} copy={s.messaging.copy} action={actionOf(s.messaging)}>
-        <SectionImage src={s.messaging.imageSrc} />
-        <div className="grid items-start gap-8 lg:grid-cols-2">
-          <FeatureCards items={s.messaging.cards.map((card, index) => ({ ...card, ...cardLooks[index % cardLooks.length] }))} />
-          <MessagingPreview />
-        </div>
-      </Section>
-
-      <Section id="meetings" eyebrow={s.meetings.eyebrow} title={s.meetings.title} copy={s.meetings.copy} action={actionOf(s.meetings)}>
-        <SectionImage src={s.meetings.imageSrc} />
-        <div className="grid items-start gap-8 lg:grid-cols-2">
-          <FeatureCards items={s.meetings.cards.map((card, index) => ({ ...card, ...cardLooks[index % cardLooks.length] }))} />
-          <MeetingPreview />
-        </div>
-      </Section>
-
-      <Section id="social" tone="mist" eyebrow={s.social.eyebrow} title={s.social.title} copy={s.social.copy} action={actionOf(s.social)}>
-        <SectionImage src={s.social.imageSrc} />
-        <div className="grid items-start gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-          <FeatureCards items={s.social.cards.map((card, index) => ({ ...card, ...cardLooks[index % cardLooks.length] }))} />
-          <SocialPreview />
-        </div>
-      </Section>
-
-      <Section id="ads" eyebrow={s.ads.eyebrow} title={s.ads.title} copy={s.ads.copy} action={actionOf(s.ads)}>
-        <SectionImage src={s.ads.imageSrc} />
-        <div className="grid items-start gap-8 lg:grid-cols-2">
-          <FeatureCards items={s.ads.cards.map((card, index) => ({ ...card, ...cardLooks[index % cardLooks.length] }))} />
-          <AdsPreview />
-        </div>
-      </Section>
-
-      <Section id="teams" tone="mist" eyebrow={s.teams.eyebrow} title={s.teams.title} copy={s.teams.copy} action={actionOf(s.teams)}>
-        <SectionImage src={s.teams.imageSrc} />
-        <div className="grid items-start gap-8 lg:grid-cols-2">
-          <FeatureCards items={s.teams.cards.map((card, index) => ({ ...card, ...cardLooks[index % cardLooks.length] }))} />
-          <TeamPreview />
-        </div>
-      </Section>
+      <ProductBand id="messaging" index={1} section={s.messaging}>
+        <MessagingPreview />
+      </ProductBand>
+      <ProductBand id="meetings" index={2} section={s.meetings} tone="mist">
+        <MeetingPreview />
+      </ProductBand>
+      <ProductBand id="social" index={3} section={s.social}>
+        <SocialPreview />
+      </ProductBand>
+      <ProductBand id="ads" index={4} section={s.ads} tone="mist">
+        <AdsPreview />
+      </ProductBand>
+      <ProductBand id="teams" index={5} section={s.teams}>
+        <TeamPreview />
+      </ProductBand>
 
       <Section id="schedule" eyebrow={s.schedule.eyebrow} title={s.schedule.title} copy={s.schedule.copy} action={actionOf(s.schedule)}>
         <SectionImage src={s.schedule.imageSrc} />

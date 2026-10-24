@@ -40,6 +40,10 @@ export function testEnv(overrides: Partial<ApiEnv> = {}): ApiEnv {
     TURN_URL: "",
     TURN_USERNAME: "",
     TURN_PASSWORD: "",
+    GOOGLE_ADS_ENABLED: false,
+    GOOGLE_ADS_DEVELOPER_TOKEN: "",
+    GOOGLE_ADS_CLIENT_ID: "",
+    GOOGLE_ADS_CLIENT_SECRET: "",
     ...overrides
   };
 }

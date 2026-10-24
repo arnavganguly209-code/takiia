@@ -7,12 +7,14 @@ import { webOrigins, type ApiEnv } from "./env.js";
 import { createAuthRequired } from "./middleware/auth.js";
 import { authLimiter, writeLimiter } from "./middleware/rate-limit.js";
 import { createCsrfGuard } from "./middleware/security.js";
+import { adsRouter } from "./routes/ads.js";
 import { authRouter } from "./routes/auth.js";
 import { billingRouter, plansRouter } from "./routes/billing.js";
 import { contactRouter } from "./routes/contact.js";
 import { conversationsRouter } from "./routes/conversations.js";
 import { healthRouter } from "./routes/health.js";
 import { meetingsRouter } from "./routes/meetings.js";
+import { platformRouter } from "./routes/platform.js";
 import { profileRouter } from "./routes/profile.js";
 import { socialRouter } from "./routes/social.js";
 import { workspacesRouter } from "./routes/workspaces.js";
@@ -39,6 +41,8 @@ export function createApp(env: ApiEnv, io: SocketServer) {
   app.use(writeLimiter);
 
   app.use(healthRouter(env));
+  app.use(platformRouter(env));
+  app.use(adsRouter(env));
   app.use("/auth/register", authLimiter);
   app.use("/auth/login", authLimiter);
   app.use("/auth", authRouter(env));

@@ -20,6 +20,26 @@ describe("health endpoints", () => {
     expect(response.body.features.googleAds).toBe(false);
   });
 
+  it("exposes the Node platform catalog without secrets", async () => {
+    const app = createTestApp();
+    const response = await request(app).get("/platform");
+    expect(response.status).toBe(200);
+    expect(response.body.runtime).toBe("node");
+    expect(response.body.services.map((item: { id: string }) => item.id)).toEqual(
+      expect.arrayContaining(["messaging", "meetings", "social", "ads", "billing"])
+    );
+    expect(JSON.stringify(response.body)).not.toMatch(/secret|token|password/i);
+  });
+
+  it("keeps Google Ads disconnected until credentials exist", async () => {
+    const app = createTestApp();
+    const response = await request(app).get("/ads/status");
+    expect(response.status).toBe(200);
+    expect(response.body.configured).toBe(false);
+    expect(response.body.campaigns).toEqual([]);
+    expect(response.body.spendIncludedInSubscription).toBe(false);
+  });
+
   it("rejects unauthenticated private routes", async () => {
     const app = createTestApp();
     const response = await request(app).get("/workspaces");

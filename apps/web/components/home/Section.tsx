@@ -41,6 +41,50 @@ export function Section({
   );
 }
 
+export function ProductBand({
+  id,
+  index,
+  section,
+  children,
+  tone = "paper"
+}: {
+  id: string;
+  index: number;
+  section: { eyebrow: string; title: string; copy?: string; cards: Array<{ title: string; body: string }>; actionHref?: string; actionLabel?: string };
+  children: ReactNode;
+  tone?: "paper" | "mist";
+}) {
+  return (
+    <section id={id} className={tone === "mist" ? "bg-mist" : "bg-white"}>
+      <div className="site-wrap grid items-center gap-12 py-20 lg:grid-cols-12 lg:py-28">
+        <div className="lg:col-span-5">
+          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#7C93AA]">
+            {String(index).padStart(2, "0")} · {section.eyebrow}
+          </p>
+          <h2 className="mt-4 text-3xl font-bold tracking-tight text-navy sm:text-[2.4rem] sm:leading-tight">{section.title}</h2>
+          {section.copy ? <p className="mt-4 text-base leading-8 text-muted">{section.copy}</p> : null}
+          {section.cards.length ? (
+            <ul className="mt-8 space-y-4">
+              {section.cards.map((card) => (
+                <li key={card.title} className="border-l-2 border-cyan-400 pl-4">
+                  <p className="font-bold text-navy">{card.title}</p>
+                  <p className="mt-1 text-sm leading-6 text-muted">{card.body}</p>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {section.actionHref && section.actionLabel ? (
+            <Link href={section.actionHref} className="btn-primary mt-8 px-6 py-3">
+              {section.actionLabel}
+            </Link>
+          ) : null}
+        </div>
+        <div className="lg:col-span-7">{children}</div>
+      </div>
+    </section>
+  );
+}
+
 export function DemoLabel({ children }: { children: ReactNode }) {
   return <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-brand-500">{children}</p>;
 }
