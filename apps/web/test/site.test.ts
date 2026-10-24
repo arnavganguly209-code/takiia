@@ -22,11 +22,10 @@ describe("site metadata", () => {
 });
 
 describe("home hero", () => {
-  it("builds the hero from UI instead of pasting the brand photograph", async () => {
-    const home = await import("../components/home/HomeView");
-    const stage = await import("../components/home/HeroStage");
-    expect(home.HomeView.toString()).not.toContain("takiia-hero.jpg");
-    expect(stage.HeroStage.name).toBe("HeroStage");
+  it("uses the approved ultra-HD hero scene", async () => {
+    const hero = await import("../components/home/HomeHero");
+    expect(hero.HomeHero.toString()).toContain("/brand/takiia-hero-scene.jpg");
+    expect(hero.HomeHero.toString()).toContain("Chat, Meet and Manage Social Media All in One Place.");
   });
 
   it("keeps the long-form homepage section order", async () => {
