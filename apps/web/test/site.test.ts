@@ -22,12 +22,14 @@ describe("site metadata", () => {
 });
 
 describe("home hero", () => {
-  it("builds the hero as interface markup instead of a pasted scene", async () => {
-    const hero = await import("../components/home/HomeHero");
-    const source = hero.HomeHero.toString();
-    expect(source).toContain("All in One Place.");
-    expect(source).not.toContain("takiia-hero-scene.jpg");
-    expect(source).not.toContain("<img");
+  it("builds the hero from generated device images instead of a pasted scene", async () => {
+    const fs = await import("node:fs/promises");
+    const hero = await fs.readFile(new URL("../components/home/HomeHero.tsx", import.meta.url), "utf8");
+    const devices = await fs.readFile(new URL("../components/home/HeroDevices.tsx", import.meta.url), "utf8");
+    expect(hero).toContain("All in One Place.");
+    expect(devices).toContain("/brand/takiia-laptop.jpg");
+    expect(devices).toContain("/brand/takiia-phone.png");
+    expect(`${hero}\n${devices}`).not.toContain("takiia-hero-scene.jpg");
   });
 
   it("keeps the long-form homepage section order", async () => {

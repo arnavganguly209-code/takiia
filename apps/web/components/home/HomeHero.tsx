@@ -10,47 +10,47 @@ const features = [
 
 export function HomeHero() {
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#f7fbff_0%,#ffffff_70%)]">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_18%,rgba(34,199,232,0.18),transparent_32%),radial-gradient(circle_at_12%_80%,rgba(103,232,197,0.12),transparent_28%)]" />
-      <svg className="pointer-events-none absolute right-0 top-8 hidden h-40 w-[46%] text-[#22C7E8]/30 lg:block" viewBox="0 0 600 160" fill="none" aria-hidden="true">
+    <section className="relative h-[calc(100svh-5.25rem)] overflow-hidden bg-[linear-gradient(180deg,#f4f9ff_0%,#ffffff_68%)]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_16%,rgba(34,199,232,0.16),transparent_34%),radial-gradient(circle_at_8%_88%,rgba(103,232,197,0.12),transparent_28%)]" />
+      <svg className="pointer-events-none absolute right-[6%] top-[8%] hidden h-28 w-[42%] text-[#22C7E8]/35 lg:block" viewBox="0 0 600 160" fill="none" aria-hidden="true">
         <path d="M0 90C80 40 140 130 220 80C300 30 380 120 460 70C520 36 560 50 600 40" stroke="currentColor" strokeWidth="2" />
         <path d="M20 120C110 70 170 140 250 96C340 46 410 130 520 86" stroke="currentColor" strokeWidth="1.5" />
       </svg>
-      <div className="relative mx-auto grid max-w-[1180px] items-center gap-8 px-5 py-8 sm:py-12 lg:grid-cols-[0.86fr_1.14fr] lg:gap-6 lg:py-14">
-        <div className="max-w-xl">
-          <p className="inline-flex rounded-full bg-white/80 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-[#14264A]/70">
+      <div className="relative mx-auto grid h-full max-w-[1280px] grid-rows-[auto_minmax(0,1fr)] items-center gap-1 px-4 py-2 sm:px-6 lg:grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)] lg:grid-rows-1 lg:gap-3 lg:py-3">
+        <div className="min-w-0">
+          <p className="inline-flex rounded-full bg-white/80 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#14264A]/70">
             All-in-one workspace
           </p>
-          <h1 className="mt-4 text-[2.05rem] font-semibold leading-[1.02] tracking-tight text-[#14264A] sm:text-5xl lg:text-[3.05rem]">
+          <h1 className="mt-2 text-[clamp(1.55rem,4.5vh,3.05rem)] font-semibold leading-[1.02] tracking-tight text-[#14264A]">
             <span className="block">Chat, Meet and</span>
             <span className="block">Manage Social Media</span>
             <span className="block bg-gradient-to-r from-[#22C7E8] to-[#3dE8B0] bg-clip-text text-transparent">All in One Place.</span>
           </h1>
-          <p className="mt-4 max-w-md text-[15px] leading-7 text-[#66758B] sm:text-base">
+          <p className="mt-2 max-w-md text-[clamp(0.78rem,1.65vh,0.98rem)] leading-snug text-[#66758B]">
             Bring your conversations, online meetings, team collaboration and social publishing together in one simple
             workspace. Spend less time switching tools and more time getting work done.
           </p>
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <Link href="/signup" className="btn-primary gap-2 px-6 py-3">
+          <div className="mt-3 flex flex-wrap items-center gap-2.5">
+            <Link href="/signup" className="btn-primary gap-2 px-5 py-2">
               Get Started
               <span aria-hidden="true">→</span>
             </Link>
-            <Link href="#workspace" className="inline-flex items-center gap-2 rounded-full border border-[#E5ECF5] bg-white px-5 py-3 text-sm font-semibold text-[#14264A] shadow-soft">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#14264A] text-[10px] text-white" aria-hidden="true">
+            <Link href="#workspace" className="inline-flex items-center gap-2 rounded-full border border-[#E5ECF5] bg-white px-4 py-2 text-sm font-semibold text-[#14264A] shadow-soft">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#14264A] text-[9px] text-white" aria-hidden="true">
                 ▶
               </span>
               Watch Video
             </Link>
           </div>
-          <ul className="mt-7 grid grid-cols-4 gap-2 text-center sm:max-w-lg">
+          <ul className="mt-3 grid max-w-md grid-cols-4 gap-1.5 text-center">
             {features.map((item) => (
               <li key={item.label}>
-                <span className={`mx-auto flex h-11 w-11 items-center justify-center rounded-2xl ${item.color}`}>
-                  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                <span className={`mx-auto flex h-9 w-9 items-center justify-center rounded-xl ${item.color}`}>
+                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                     <path d={item.d} strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </span>
-                <span className="mt-2 block text-[11px] font-semibold leading-4 text-[#14264A] sm:text-xs">{item.label}</span>
+                <span className="mt-1 block text-[10px] font-semibold leading-3 text-[#14264A] sm:text-[11px]">{item.label}</span>
               </li>
             ))}
           </ul>
