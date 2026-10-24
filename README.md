@@ -91,6 +91,8 @@ Details: `docs/database.md`.
 
 ## Deployment
 
+After one-time GitHub Environment and VPS SSH setup, pushes to `main` deploy automatically when CI passes. First-launch DNS, Nginx, and SSL steps are in `docs/launch.md`. Day-2 automation is in `docs/auto-deploy.md`.
+
 Files are prepared in `infra/` and `scripts/deploy/`. This project does not connect to the VPS or create databases by itself.
 
 Read `docs/deployment.md` before any production change. Rollback is documented there.

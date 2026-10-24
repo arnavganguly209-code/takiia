@@ -1,55 +1,68 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
 
-const groups = [
+const columns = [
   {
     title: "Product",
     links: [
-      ["/features", "Features"],
       ["/messaging", "Messaging"],
       ["/meetings", "Meetings"],
-      ["/social", "Social"],
-      ["/teams", "Teams"]
+      ["/social", "Social Media Management"],
+      ["/teams", "Team Collaboration"],
+      ["/scheduling", "Calendar & Scheduling"],
+      ["/files", "File Sharing"]
+    ]
+  },
+  {
+    title: "Solutions",
+    links: [
+      ["/solutions#individuals", "Individuals"],
+      ["/solutions#teams", "Teams"],
+      ["/solutions#agencies", "Agencies"]
+    ]
+  },
+  {
+    title: "Resources",
+    links: [
+      ["/faq", "Help Center"],
+      ["/contact", "Contact"]
     ]
   },
   {
     title: "Company",
     links: [
-      ["/pricing", "Pricing"],
-      ["/security", "Security"],
-      ["/privacy", "Privacy"],
-      ["/faq", "FAQ"],
-      ["/contact", "Contact"]
-    ]
-  },
-  {
-    title: "Access",
-    links: [
-      ["/login", "Log in"],
-      ["/signup", "Get Started"],
-      ["/dashboard", "Dashboard"]
+      ["/solutions", "About Takiia"],
+      ["/contact", "Contact"],
+      ["/pricing", "Pricing"]
     ]
   }
+] as const;
+
+const legalLinks = [
+  ["/privacy", "Privacy Policy"],
+  ["/terms", "Terms of Service"],
+  ["/billing", "Billing & Cancellation"]
 ] as const;
 
 export function SiteFooter() {
   return (
     <footer className="border-t border-line bg-mist">
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-4">
-        <div>
+      <div className="site-wrap grid gap-12 py-16 md:grid-cols-2 xl:grid-cols-6">
+        <div className="xl:col-span-2">
           <Logo />
-          <p className="mt-4 max-w-xs text-sm leading-6 text-muted">
-            A workspace for team messaging, scheduled meetings, and social publishing queues. Payments and third-party
-            publishing stay off until those providers are configured.
+          <p className="mt-4 max-w-sm text-sm leading-7 text-muted">
+            Takiia brings messaging, meetings, team collaboration and social publishing together in one organized
+            workspace.
           </p>
+          <div className="mt-5 h-1 w-16 rounded-full bg-gradient-to-r from-cyan-400 to-mint-400" />
         </div>
-        {groups.map((group) => (
+        {columns.map((group) => (
           <div key={group.title}>
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-navy">{group.title}</p>
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-navy">{group.title}</p>
             <ul className="mt-4 space-y-2 text-sm text-muted">
               {group.links.map(([href, label]) => (
-                <li key={href}>
-                  <Link href={href} className="hover:text-navy">
+                <li key={`${href}-${label}`}>
+                  <Link href={href} className="transition hover:text-navy">
                     {label}
                   </Link>
                 </li>
@@ -58,8 +71,19 @@ export function SiteFooter() {
           </div>
         ))}
       </div>
-      <div className="border-t border-line px-5 py-5 text-center text-xs text-muted">
-        © {new Date().getFullYear()} Takiia. All rights reserved.
+      <div className="border-t border-line">
+        <div className="site-wrap flex flex-col gap-3 py-5 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} Takiia. All rights reserved.</p>
+          <ul className="flex flex-wrap gap-4">
+            {legalLinks.map(([href, label]) => (
+              <li key={href}>
+                <Link href={href} className="hover:text-navy">
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </footer>
   );

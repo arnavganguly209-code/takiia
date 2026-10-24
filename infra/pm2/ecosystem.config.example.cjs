@@ -30,7 +30,7 @@ module.exports = {
     {
       name: "takiia-web",
       cwd: "/srv/apps/takiia/apps/web",
-      script: "node_modules/next/dist/bin/next",
+      script: "/srv/apps/takiia/node_modules/next/dist/bin/next",
       args: "start -H 127.0.0.1 -p 3034",
       interpreter: "node",
       instances: 1,

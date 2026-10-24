@@ -68,3 +68,6 @@ dump.sql
 # Optional local override
 ecosystem.config.cjs
 infra/nginx/takiia.conf
+
+# VPS-only first-launch gate; never commit a live ready file
+.launch-ready

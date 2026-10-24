@@ -1,0 +1,88 @@
+# Manual, read-only SSH check using the production environment secrets.
+# Does not deploy, migrate, build, or restart anything.
+# Secrets belong in the GitHub Environment, never in this file.
+name: SSH diagnostic
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: takiia-ssh-diagnostic
+  cancel-in-progress: false
+
+jobs:
+  ssh-diagnostic:
+    name: Read-only SSH check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: production
+    steps:
+      - name: Required environment secrets
+        env:
+          HOST: ${{ secrets.TAKIIA_DEPLOY_HOST }}
+          USER: ${{ secrets.TAKIIA_DEPLOY_USER }}
+          KEY: ${{ secrets.TAKIIA_DEPLOY_SSH_KEY }}
+          KNOWN: ${{ secrets.TAKIIA_DEPLOY_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          missing=0
+          [ -n "${HOST:-}" ] || { echo "TAKIIA_DEPLOY_HOST is not set in the production environment."; missing=1; }
+          [ -n "${USER:-}" ] || { echo "TAKIIA_DEPLOY_USER is not set in the production environment."; missing=1; }
+          [ -n "${KEY:-}" ] || { echo "TAKIIA_DEPLOY_SSH_KEY is not set in the production environment."; missing=1; }
+          [ -n "${KNOWN:-}" ] || { echo "TAKIIA_DEPLOY_KNOWN_HOSTS is not set in the production environment."; missing=1; }
+          if [ "${USER:-}" != "takiia" ]; then
+            echo "Deploy user must be the dedicated Takiia account."
+            missing=1
+          fi
+          if [ "${HOST:-}" != "200.97.170.235" ]; then
+            echo "Deploy host does not match the Takiia production server."
+            missing=1
+          fi
+          exit "$missing"
+
+      - name: Connect with production secrets and run harmless checks
+        env:
+          TAKIIA_DEPLOY_HOST: ${{ secrets.TAKIIA_DEPLOY_HOST }}
+          TAKIIA_DEPLOY_USER: ${{ secrets.TAKIIA_DEPLOY_USER }}
+          TAKIIA_DEPLOY_SSH_KEY: ${{ secrets.TAKIIA_DEPLOY_SSH_KEY }}
+          TAKIIA_DEPLOY_KNOWN_HOSTS: ${{ secrets.TAKIIA_DEPLOY_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          install -m 700 -d "$HOME/.ssh"
+          printf '%s\n' "$TAKIIA_DEPLOY_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/known_hosts"
+          printf '%s\n' "$TAKIIA_DEPLOY_SSH_KEY" > "$HOME/.ssh/takiia_deploy"
+          chmod 600 "$HOME/.ssh/takiia_deploy"
+          trap 'rm -f "$HOME/.ssh/takiia_deploy"' EXIT
+          if [ ! -s "$HOME/.ssh/known_hosts" ]; then
+            echo "Known hosts secret is empty. Refusing to disable host checking."
+            exit 1
+          fi
+          if [ "$TAKIIA_DEPLOY_USER" != "takiia" ] || [ "$TAKIIA_DEPLOY_HOST" != "200.97.170.235" ]; then
+            echo "Host or user restriction failed."
+            exit 1
+          fi
+          remote_out="$(
+            ssh \
+              -i "$HOME/.ssh/takiia_deploy" \
+              -o IdentitiesOnly=yes \
+              -o PreferredAuthentications=publickey \
+              -o PasswordAuthentication=no \
+              -o KbdInteractiveAuthentication=no \
+              -o StrictHostKeyChecking=yes \
+              -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+              -o BatchMode=yes \
+              "${TAKIIA_DEPLOY_USER}@${TAKIIA_DEPLOY_HOST}" \
+              'set -euo pipefail; id -un; hostname; test -d /srv/apps/takiia && echo APP_OK'
+          )"
+          printf '%s\n' "$remote_out"
+          user_line="$(printf '%s\n' "$remote_out" | sed -n '1p')"
+          app_line="$(printf '%s\n' "$remote_out" | sed -n '3p')"
+          if [ "$user_line" != "takiia" ] || [ "$app_line" != "APP_OK" ]; then
+            echo "Remote identity or application directory check failed."
+            exit 1
+          fi
+          echo SSH_TEST_OK

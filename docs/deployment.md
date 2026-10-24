@@ -10,38 +10,32 @@ Target VPS layout:
 - Backups: `/var/backups/takiia`
 - Nginx: `takiia.com` / `www.takiia.com` → web, `api.takiia.com` → API, `/socket.io/` upgraded
 
-This repository prepares files. It does not SSH to the VPS, create databases, or activate Nginx.
+Automatic Cursor → GitHub `main` → live deploys are documented in `docs/auto-deploy.md`.
+
+This repository does not SSH to the VPS, create databases, or activate Nginx by itself.
 
 Node.js 20.11+ is supported. The VPS may keep its already-installed Node 22. Do not replace system-wide Node for other sites.
 
 ## First install (operator)
 
-1. Confirm the checkout at `/srv/apps/takiia` uses the Takiia SSH or HTTPS origin
-2. As root, run `scripts/deploy/setup-production-env.sh` once. It writes ignored env files and refuses to overwrite existing ones
-3. As `takiia`, install dependencies and build: `npm ci && npm run build`
-4. Apply migrations only after a verified `/var/backups/takiia` dump and explicit approval
-5. Start only `takiia-api` and `takiia-web` from the Takiia PM2 home
+1. Confirm `/srv/apps/takiia` uses the Takiia SSH origin
+2. As root, run `scripts/deploy/setup-production-env.sh` once
+3. Create `/var/backups/takiia` owned by `takiia`
+4. Configure GitHub Environments and the deploy SSH key as in `docs/auto-deploy.md`
+5. Apply the first migration only through the manual Actions option
 6. Add `infra/nginx/takiia.conf.example` as a new site file when DNS is ready
 
 Do not edit Nginx or PM2 names that belong to other sites. Do not run `pm2 startup` without a separate approval.
 
-## Approved deploy
+## Local / emergency deploy
 
-1. Confirm CI passed on the exact commit
-2. As `takiia`, fast-forward with `scripts/deploy/git-sync.sh`
-3. `TAKIIA_DEPLOY_APPROVED=yes scripts/deploy/remote-deploy.sh`
-4. Migrations stay skipped unless `TAKIIA_RUN_MIGRATIONS=yes` is also set after backup review
+```bash
+sudo -u takiia -H env TAKIIA_DEPLOY_SHA=<40-char-sha> TAKIIA_DEPLOY_APPROVED=yes \
+  bash /srv/apps/takiia/scripts/deploy/remote-deploy.sh
+```
 
-Forbidden: global PM2 actions that affect every process, persisting the entire PM2 process list, and schema-push against production. Use named Takiia reloads and `migrate deploy` only.
+Migrations stay skipped unless `TAKIIA_RUN_MIGRATIONS=yes`.
 
 ## Rollback
 
-1. Keep the previous successful commit SHA
-2. Restore `takiia_db` from the backup taken before the failed deploy if a migration ran
-3. `git -C /srv/apps/takiia checkout <previous-sha>`
-4. `npm ci` and `npm run build` at that SHA
-5. `PM2_HOME=/home/takiia/.pm2 pm2 reload takiia-api --update-env`
-6. `PM2_HOME=/home/takiia/.pm2 pm2 reload takiia-web --update-env`
-7. Re-run `verify-health.sh`
-
-GitHub Actions `deploy-production.yml` remains manual and is not used until its environment secrets are configured. It does not deploy on push.
+Failed health checks after reload restore the previous Takiia commit and reload only `takiia-api` and `takiia-web`. If a migration ran, restore `takiia_db` from `/var/backups/takiia` before trusting the rolled-back code.

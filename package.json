@@ -21,6 +21,6 @@
     "prisma:generate": "node scripts/with-placeholder-db.mjs npm run prisma:generate -w @takiia/api",
     "prisma:validate": "node scripts/with-placeholder-db.mjs npm run prisma:validate -w @takiia/api",
     "check:secrets": "node scripts/check-secrets.mjs",
-    "check:deploy": "node scripts/check-deploy-scripts.mjs"
+    "check:deploy": "node scripts/check-deploy-scripts.mjs && node scripts/check-workflows.mjs"
   }
 }

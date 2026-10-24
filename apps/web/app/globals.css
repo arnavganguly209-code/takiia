@@ -62,6 +62,25 @@ body {
   @apply inline-flex items-center justify-center rounded-full border border-line bg-white/80 px-5 py-2.5 text-sm font-semibold text-navy transition hover:border-brand-500/40;
 }
 
+.site-wrap {
+  @apply mx-auto w-full max-w-7xl px-5;
+}
+
+.card-hover {
+  @apply transition hover:-translate-y-0.5 hover:shadow-glass;
+}
+
+:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 3px;
+}
+
+.bg-section-lines {
+  background-image:
+    radial-gradient(circle at 8% 20%, rgba(34, 199, 232, 0.08), transparent 28%),
+    radial-gradient(circle at 92% 80%, rgba(103, 232, 197, 0.08), transparent 26%);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

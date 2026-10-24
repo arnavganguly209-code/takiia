@@ -9,24 +9,22 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 px-3 pt-3">
+    <header className="sticky top-0 z-40 border-b border-line/70 bg-white/45 px-3 pb-3 pt-3 backdrop-blur-xl">
       <div className="header-glass mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-5">
         <Link href="/" aria-label="Takiia home" className="shrink-0">
           <Logo />
         </Link>
         <nav className="hidden items-center gap-0.5 text-sm font-semibold text-navy xl:flex" aria-label="Primary">
           <Dropdown label="Product" items={productLinks} />
-          {nav
-            .filter((item) => item.label !== "Product")
-            .map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="rounded-full px-3 py-2 text-navy/90 transition hover:bg-white/70 hover:text-navy"
-              >
-                {item.label}
-              </Link>
-            ))}
+          {nav.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="rounded-full px-3 py-2 text-navy/90 transition hover:bg-white/70 hover:text-navy"
+            >
+              {item.label}
+            </Link>
+          ))}
           <Dropdown label="Resources" items={resourceLinks} />
         </nav>
         <div className="hidden items-center gap-3 xl:flex">
@@ -53,7 +51,7 @@ export function SiteHeader() {
           className="header-glass-panel mx-auto mt-2 grid max-w-7xl gap-2 px-5 py-4 xl:hidden"
           aria-label="Mobile"
         >
-          {[...nav, ...resourceLinks, { href: "/login", label: "Log in" }, { href: "/signup", label: "Get Started" }].map(
+          {[...productLinks, ...nav, ...resourceLinks, { href: "/login", label: "Log in" }, { href: "/signup", label: "Get Started" }].map(
             (item) => (
               <Link
                 key={`${item.href}-${item.label}`}

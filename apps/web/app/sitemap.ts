@@ -1,24 +1,8 @@
 import type { MetadataRoute } from "next";
-import { site } from "@/lib/site";
-
-const paths = [
-  "/",
-  "/features",
-  "/messaging",
-  "/meetings",
-  "/social",
-  "/teams",
-  "/pricing",
-  "/security",
-  "/privacy",
-  "/faq",
-  "/contact",
-  "/login",
-  "/signup"
-];
+import { publicPaths, site } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return paths.map((path) => ({
+  return publicPaths.map((path) => ({
     url: `${site.url}${path}`,
     lastModified: new Date()
   }));

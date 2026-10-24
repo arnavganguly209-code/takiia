@@ -1,58 +1,174 @@
-# Manual only. Do not enable push or pull_request triggers.
-# This workflow is not used until the production environment secrets exist.
+# Automatic Takiia production deploy after CI succeeds on main.
+# Migrations stay off unless a reviewer-approved workflow_dispatch sets run_migrations=yes.
+# Secrets belong in GitHub Environments, never in this file.
+# First-launch safety: both repository variable TAKIIA_LAUNCH_READY=yes and
+# /srv/apps/takiia/.launch-ready on the VPS are required. Leave them unset
+# until env files, SSH diagnostic, and the launch checklist are verified.
 name: Production deploy
 
 on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
     inputs:
       git_sha:
-        description: "Exact commit SHA already validated by CI"
-        required: true
-      confirm_backup:
-        description: "Type BACKUP-VERIFIED after a successful takiia_db backup"
-        required: true
+        description: "CI-verified 40-character commit SHA. Leave empty to use the current main tip after CI verification."
+        required: false
+        default: ""
       run_migrations:
-        description: "Set to yes only after reviewing pending Prisma migrations"
+        description: "Set to yes only to run prisma migrate deploy after a verified backup"
         required: true
         default: "no"
+        type: choice
+        options:
+          - "no"
+          - "yes"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: takiia-production
+  cancel-in-progress: false
 
 jobs:
-  deploy:
+  gate:
+    name: Verify CI-approved commit
     runs-on: ubuntu-latest
-    environment: production
+    timeout-minutes: 10
+    if: >
+      github.repository == 'arnavganguly209-code/takiia' &&
+      (
+        github.event_name == 'workflow_dispatch' ||
+        (
+          github.event_name == 'workflow_run' &&
+          github.event.workflow_run.conclusion == 'success' &&
+          github.event.workflow_run.event == 'push' &&
+          github.event.workflow_run.head_branch == 'main' &&
+          github.event.workflow_run.head_repository.full_name == github.repository
+        )
+      )
+    outputs:
+      sha: ${{ steps.resolve.outputs.sha }}
+      migrate: ${{ steps.resolve.outputs.migrate }}
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.git_sha }}
-
-      - name: Confirm backup acknowledgement
-        run: |
-          if [ "${{ inputs.confirm_backup }}" != "BACKUP-VERIFIED" ]; then
-            echo "Backup was not acknowledged."
-            exit 1
-          fi
-
-      - name: Verify CI success on this commit
+      - name: Resolve SHA and require passing CI
+        id: resolve
         env:
           GH_TOKEN: ${{ github.token }}
+          TAKIIA_LAUNCH_READY: ${{ vars.TAKIIA_LAUNCH_READY }}
         run: |
-          gh api \
-            -H "Accept: application/vnd.github+json" \
-            "/repos/${{ github.repository }}/actions/runs?head_sha=${{ inputs.git_sha }}&status=completed" \
-            --jq '.workflow_runs[] | select(.name=="CI" and .conclusion=="success") | .id' \
-            | grep -q .
-
-      - name: Deploy over SSH
-        env:
-          TAKIIA_RUN_MIGRATIONS: ${{ inputs.run_migrations }}
-        run: |
-          echo "This workflow expects GitHub environments named production with required reviewers."
-          echo "Configure repository secrets on the environment, not in this YAML:"
-          echo "  TAKIIA_DEPLOY_HOST, TAKIIA_DEPLOY_USER, TAKIIA_DEPLOY_SSH_KEY"
-          echo "The deploy user must only write /srv/apps/takiia and reload takiia-api / takiia-web."
-          if [ -z "${TAKIIA_DEPLOY_HOST:-}" ]; then
-            echo "TAKIIA_DEPLOY_HOST is not available in this environment. Stopping without deploy."
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            SHA="${{ github.event.workflow_run.head_sha }}"
+            MIGRATE="no"
+          else
+            SHA="${{ inputs.git_sha }}"
+            MIGRATE="${{ inputs.run_migrations }}"
+            if [ -z "$SHA" ]; then
+              SHA="${{ github.sha }}"
+            fi
+          fi
+          if ! echo "$SHA" | grep -Eq '^[0-9a-f]{40}$'; then
+            echo "Deployment SHA is not a complete commit id."
             exit 1
           fi
-          echo "SSH deploy is intentionally not hard-coded. Use the VPS-local remote-deploy.sh after secrets are set."
-          exit 1
+          if [ "${TAKIIA_LAUNCH_READY:-}" != "yes" ]; then
+            echo "Production deploy is gated until repository variable TAKIIA_LAUNCH_READY=yes."
+            echo "Set that variable only after the SSH diagnostic, VPS env files, and launch checklist are verified."
+            echo "The SSH diagnostic workflow does not require this variable."
+            exit 1
+          fi
+          if [ "$MIGRATE" != "yes" ] && [ "$MIGRATE" != "no" ]; then
+            echo "run_migrations must be yes or no."
+            exit 1
+          fi
+          if ! gh api \
+            -H "Accept: application/vnd.github+json" \
+            "/repos/${{ github.repository }}/actions/runs?head_sha=${SHA}&status=completed&per_page=20" \
+            --jq '.workflow_runs[] | select(.name=="CI" and .head_branch=="main" and .conclusion=="success") | .id' \
+            | grep -q .; then
+            echo "No successful CI run on main for this commit."
+            exit 1
+          fi
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "migrate=$MIGRATE" >> "$GITHUB_OUTPUT"
+          echo "Approved Takiia commit $SHA (migrations=$MIGRATE)"
+
+  deploy:
+    name: Deploy Takiia over SSH
+    needs: gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: ${{ needs.gate.outputs.migrate == 'yes' && 'production-migrate' || 'production' }}
+    steps:
+      - name: Required environment secrets
+        env:
+          HOST: ${{ secrets.TAKIIA_DEPLOY_HOST }}
+          USER: ${{ secrets.TAKIIA_DEPLOY_USER }}
+          KEY: ${{ secrets.TAKIIA_DEPLOY_SSH_KEY }}
+          KNOWN: ${{ secrets.TAKIIA_DEPLOY_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          missing=0
+          [ -n "${HOST:-}" ] || { echo "TAKIIA_DEPLOY_HOST is not set in the GitHub Environment."; missing=1; }
+          [ -n "${USER:-}" ] || { echo "TAKIIA_DEPLOY_USER is not set in the GitHub Environment."; missing=1; }
+          [ -n "${KEY:-}" ] || { echo "TAKIIA_DEPLOY_SSH_KEY is not set in the GitHub Environment."; missing=1; }
+          [ -n "${KNOWN:-}" ] || { echo "TAKIIA_DEPLOY_KNOWN_HOSTS is not set in the GitHub Environment."; missing=1; }
+          if [ "$USER" != "takiia" ]; then
+            echo "Deploy user must be the dedicated Takiia account."
+            missing=1
+          fi
+          if [ "$HOST" != "200.97.170.235" ]; then
+            echo "Deploy host does not match the Takiia production server."
+            missing=1
+          fi
+          exit "$missing"
+
+      - name: SSH to takiia and deploy the approved commit
+        env:
+          TAKIIA_DEPLOY_HOST: ${{ secrets.TAKIIA_DEPLOY_HOST }}
+          TAKIIA_DEPLOY_USER: ${{ secrets.TAKIIA_DEPLOY_USER }}
+          TAKIIA_DEPLOY_SSH_KEY: ${{ secrets.TAKIIA_DEPLOY_SSH_KEY }}
+          TAKIIA_DEPLOY_KNOWN_HOSTS: ${{ secrets.TAKIIA_DEPLOY_KNOWN_HOSTS }}
+          TAKIIA_DEPLOY_SHA: ${{ needs.gate.outputs.sha }}
+          TAKIIA_RUN_MIGRATIONS: ${{ needs.gate.outputs.migrate }}
+        run: |
+          set -euo pipefail
+          install -m 700 -d "$HOME/.ssh"
+          printf '%s\n' "$TAKIIA_DEPLOY_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/known_hosts"
+          printf '%s\n' "$TAKIIA_DEPLOY_SSH_KEY" > "$HOME/.ssh/takiia_deploy"
+          chmod 600 "$HOME/.ssh/takiia_deploy"
+          trap 'rm -f "$HOME/.ssh/takiia_deploy"' EXIT
+          if [ ! -s "$HOME/.ssh/known_hosts" ]; then
+            echo "Known hosts secret is empty. Refusing to disable host checking."
+            exit 1
+          fi
+          echo "$TAKIIA_DEPLOY_SHA" | grep -Eq '^[0-9a-f]{40}$'
+          echo "$TAKIIA_RUN_MIGRATIONS" | grep -Eq '^(yes|no)$'
+          ssh \
+            -i "$HOME/.ssh/takiia_deploy" \
+            -o IdentitiesOnly=yes \
+            -o PreferredAuthentications=publickey \
+            -o PasswordAuthentication=no \
+            -o KbdInteractiveAuthentication=no \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            -o BatchMode=yes \
+            "${TAKIIA_DEPLOY_USER}@${TAKIIA_DEPLOY_HOST}" \
+            "TAKIIA_DEPLOY_SHA=${TAKIIA_DEPLOY_SHA} TAKIIA_RUN_MIGRATIONS=${TAKIIA_RUN_MIGRATIONS} /srv/apps/takiia/scripts/deploy/actions-deploy.sh"
+
+      - name: Record deploy result
+        if: always()
+        run: |
+          {
+            echo "### Takiia production deploy"
+            echo
+            echo "- commit: \`${{ needs.gate.outputs.sha }}\`"
+            echo "- migrations: \`${{ needs.gate.outputs.migrate }}\`"
+            echo "- job: \`${{ job.status }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"

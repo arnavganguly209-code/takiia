@@ -1,31 +1,32 @@
-# Example Nginx site for Takiia only.
-# Install as a new file, for example /etc/nginx/sites-available/takiia.conf
+# Dedicated Takiia virtual host. Install as a NEW file only:
+#   /etc/nginx/sites-available/takiia.conf
 # Do not edit server blocks that belong to other websites.
-# TLS certificates should be added later with a Takiia-only certbot run.
-# This file is not activated by repository scripts.
+# This file is not enabled by GitHub Actions or deploy scripts.
+#
+# HTTP remains available for the ACME webroot challenge.
+# HTTPS certificate paths must be the files Certbot actually prints.
+# Default lineage name is takiia.com only if certbot created that directory.
 
-upstream takiia_web {
-    server 127.0.0.1:3034;
+map $http_upgrade $takiia_connection_upgrade {
+    default upgrade;
+    ''      close;
 }
 
-upstream takiia_api {
-    server 127.0.0.1:3033;
-}
+# Shared ACME webroot. Create once: /var/www/takiia-acme/.well-known/acme-challenge
+# owned by www-data, not used by other sites unless you deliberately share it.
 
 server {
     listen 80;
     listen [::]:80;
     server_name takiia.com www.takiia.com;
 
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/takiia-acme;
+        default_type text/plain;
+    }
+
     location / {
-        proxy_pass http://takiia_web;
-        proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
+        return 301 https://takiia.com$request_uri;
     }
 }
 
@@ -34,11 +35,77 @@ server {
     listen [::]:80;
     server_name api.takiia.com;
 
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/takiia-acme;
+        default_type text/plain;
+    }
+
+    location / {
+        return 301 https://api.takiia.com$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name www.takiia.com;
+
+    ssl_certificate     /etc/letsencrypt/live/takiia.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/takiia.com/privkey.pem;
+
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/takiia-acme;
+        default_type text/plain;
+    }
+
+    location / {
+        return 301 https://takiia.com$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name takiia.com;
+
+    ssl_certificate     /etc/letsencrypt/live/takiia.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/takiia.com/privkey.pem;
+
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/takiia-acme;
+        default_type text/plain;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:3034;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $takiia_connection_upgrade;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name api.takiia.com;
+
+    ssl_certificate     /etc/letsencrypt/live/takiia.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/takiia.com/privkey.pem;
+
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/takiia-acme;
+        default_type text/plain;
+    }
+
     location /socket.io/ {
-        proxy_pass http://takiia_api;
+        proxy_pass http://127.0.0.1:3033;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
+        proxy_set_header Connection $takiia_connection_upgrade;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -46,7 +113,7 @@ server {
     }
 
     location / {
-        proxy_pass http://takiia_api;
+        proxy_pass http://127.0.0.1:3033;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;

@@ -6,13 +6,13 @@ const config: Config = {
     extend: {
       colors: {
         paper: "#FFFFFF",
-        mist: "#F6FAFF",
-        ink: "#17243A",
-        navy: "#173B70",
-        muted: "#62718A",
-        line: "#E4EBF4",
-        pale: "#EAF3FF",
-        mintsoft: "#E8FFF6",
+        mist: "#F7FAFF",
+        ink: "#1B2940",
+        navy: "#14264A",
+        muted: "#66758B",
+        line: "#E5ECF5",
+        pale: "#EDF5FF",
+        mintsoft: "#E9FFF6",
         brand: {
           500: "#2563EB",
           600: "#1D4ED8"

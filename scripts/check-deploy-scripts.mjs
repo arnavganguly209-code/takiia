@@ -27,10 +27,15 @@ const files = [
   "scripts/deploy/verify-health.sh",
   "scripts/deploy/git-sync.sh",
   "scripts/deploy/setup-production-env.sh",
+  "scripts/deploy/actions-deploy.sh",
+  "scripts/deploy/nginx-preflight.sh",
   "scripts/backup/takiia-db-backup.sh",
   "scripts/deploy/lib/takiia-db-url.sh",
   "scripts/deploy/lib/takiia-env-file.sh",
-  "scripts/deploy/test/takiia-db-url.test.sh"
+  "scripts/deploy/lib/takiia-git.sh",
+  "scripts/deploy/test/takiia-db-url.test.sh",
+  "scripts/deploy/test/takiia-git.test.sh",
+  "scripts/deploy/test/takiia-deploy-gates.test.sh"
 ];
 
 const forbidden = ["pm2 restart all", "pm2 reload all", "pm2 delete all", "pm2 save", "prisma db push", "prisma migrate reset"];
@@ -47,6 +52,9 @@ for (const file of files) {
     failed = true;
   }
   for (const item of forbidden) {
+    if (file.includes("/test/") || file.includes("\\test\\")) {
+      continue;
+    }
     if (text.includes(item)) {
       console.error(`${file} contains forbidden command: ${item}`);
       failed = true;
@@ -65,12 +73,17 @@ if (backup.includes("set -a") || /^\s*source "\$ENV_FILE"/m.test(backup)) {
 }
 
 const gitSync = readFileSync("scripts/deploy/git-sync.sh", "utf8");
-if (!gitSync.includes("git@github.com:arnavganguly209-code/takiia")) {
-  console.error("git-sync must accept the SSH Takiia origin");
+const gitLib = readFileSync("scripts/deploy/lib/takiia-git.sh", "utf8");
+if (!gitLib.includes("git@github.com:arnavganguly209-code/takiia")) {
+  console.error("git identity helper must accept the SSH Takiia origin");
   failed = true;
 }
-if (!gitSync.includes("https://github.com/arnavganguly209-code/takiia")) {
-  console.error("git-sync must accept the HTTPS Takiia origin");
+if (!gitLib.includes("https://github.com/arnavganguly209-code/takiia")) {
+  console.error("git identity helper must accept the HTTPS Takiia origin");
+  failed = true;
+}
+if (!gitSync.includes("TAKIIA_DEPLOY_SHA") || !gitSync.includes("checkout --detach")) {
+  console.error("git-sync must check out an exact approved SHA");
   failed = true;
 }
 
@@ -105,12 +118,18 @@ if (!bashBin) {
       failed = true;
     }
   }
-  const unit = spawnSync(bashBin, ["scripts/deploy/test/takiia-db-url.test.sh"], { encoding: "utf8" });
-  if (unit.status !== 0) {
-    console.error(unit.stderr || unit.stdout);
-    failed = true;
-  } else {
-    process.stdout.write(unit.stdout);
+  for (const unitFile of [
+    "scripts/deploy/test/takiia-db-url.test.sh",
+    "scripts/deploy/test/takiia-git.test.sh",
+    "scripts/deploy/test/takiia-deploy-gates.test.sh"
+  ]) {
+    const unit = spawnSync(bashBin, [unitFile], { encoding: "utf8" });
+    if (unit.status !== 0) {
+      console.error(unit.stderr || unit.stdout);
+      failed = true;
+    } else {
+      process.stdout.write(unit.stdout);
+    }
   }
 }
 

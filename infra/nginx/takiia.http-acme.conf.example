@@ -1,0 +1,62 @@
+# Temporary HTTP-only Takiia site used BEFORE certificates exist.
+# Install as /etc/nginx/sites-available/takiia.conf then enable only this file.
+# After certbot certonly --webroot succeeds, replace it with takiia.conf.example
+# (HTTPS + www-to-apex). Do not edit other websites' files.
+
+map $http_upgrade $takiia_connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name takiia.com www.takiia.com;
+
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/takiia-acme;
+        default_type text/plain;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:3034;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $takiia_connection_upgrade;
+    }
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name api.takiia.com;
+
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/takiia-acme;
+        default_type text/plain;
+    }
+
+    location /socket.io/ {
+        proxy_pass http://127.0.0.1:3033;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $takiia_connection_upgrade;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:3033;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
