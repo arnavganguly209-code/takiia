@@ -29,13 +29,13 @@ const features = [
 
 export function HomeHero() {
   return (
-    <section className="relative h-[calc(100svh-4.75rem)] overflow-hidden bg-[#e9f6fd]">
+    <section className="relative h-[calc(100svh-4.75rem)] overflow-hidden bg-[#d7eaf6]">
       <img
-        src="/brand/takiia-hero-devices.jpg"
+        src="/brand/takiia-devices-clean.jpg"
         alt="Takiia workspace on a laptop beside a team meeting on a phone"
         width={2560}
         height={1440}
-        className="absolute inset-0 h-full w-full object-cover object-[68%_center]"
+        className="absolute bottom-0 right-0 top-0 h-full w-auto max-w-[70%] object-contain object-right"
       />
       <div className="relative z-10 flex h-full items-center px-6 sm:px-10 lg:px-14">
         <div className="w-full max-w-[34rem]">

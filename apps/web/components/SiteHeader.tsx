@@ -9,7 +9,7 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line/70 bg-white/45 px-3 pb-3 pt-3 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 bg-white/70 px-3 pb-3 pt-3 backdrop-blur-xl">
       <div className="header-glass mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-5">
         <Link href="/" aria-label="Takiia home" className="shrink-0">
           <Logo />
