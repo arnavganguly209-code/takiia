@@ -162,8 +162,8 @@ export const defaultSiteContent: SiteContent = {
     },
     messaging: {
       eyebrow: "Messaging",
-      title: "Conversations That Keep Work Moving.",
-      copy: "Stay connected through direct messages, group conversations and team channels in one organized interface.",
+      title: "All Your Conversations, One Workspace.",
+      copy: "Direct messages, group chats, and team channels stay in Takiia’s own messaging service. This is not WhatsApp unless a separate authorized WhatsApp Business integration is added later.",
       actionLabel: "Explore Messaging",
       actionHref: "/messaging",
       cards: [
@@ -188,9 +188,9 @@ export const defaultSiteContent: SiteContent = {
     },
     social: {
       eyebrow: "Social media management",
-      title: "Plan Once. Publish Across Your Connected Channels.",
-      copy: "Create content, organize your publishing calendar and manage supported social accounts from one workspace. Automatic publishing waits on official Facebook, Instagram, and TikTok credentials.",
-      actionLabel: "Explore Social Media Management",
+      title: "Manage All Your Social Channels from One Place.",
+      copy: "Create content, organize your publishing calendar and manage Facebook, Instagram, and TikTok from one workspace. Automatic publishing waits on official credentials. No account is shown as connected without an authorized connection.",
+      actionLabel: "Explore Social Media",
       actionHref: "/social",
       cards: [
         { title: "Connect supported accounts", body: "Facebook, Instagram, and TikTok appear as connected only after official credentials exist." },
@@ -201,8 +201,8 @@ export const defaultSiteContent: SiteContent = {
     },
     meetings: {
       eyebrow: "Online meetings",
-      title: "Bring Everyone Together, Wherever They Work.",
-      copy: "Plan meetings, invite participants and keep join records next to the workspace inbox. Live audio, video, mute, camera, and screen share stay marked planned until a verified media path exists.",
+      title: "Meet, Talk and Collaborate.",
+      copy: "Create meetings, invite participants, and keep join records next to the workspace inbox. Live audio, video, mute, camera, and screen share stay planned until TURN or LiveKit is verified on a real network.",
       actionLabel: "Explore Meetings",
       actionHref: "/meetings",
       cards: [
@@ -244,7 +244,7 @@ export const defaultSiteContent: SiteContent = {
     integrations: {
       eyebrow: "Integrations",
       title: "Connect the Platforms You Already Use.",
-      copy: "Bring supported social publishing workflows into your Takiia workspace. No account is shown as connected unless an authorized connection exists.",
+      copy: "Each card shows what Takiia can do and the current availability. Nothing is marked connected until official credentials and an authorized account exist.",
       cards: [
         { title: "Facebook", body: "Page and post publishing after official app review." },
         { title: "Instagram", body: "Supported media and permissions after official credentials." },
@@ -273,8 +273,8 @@ export const defaultSiteContent: SiteContent = {
       cards: [
         { title: "Create your account", body: "Sign up with an email and a 12-character password." },
         { title: "Set up your workspace", body: "The first account creates a workspace you can invite others into." },
-        { title: "Connect supported social accounts", body: "Only after official Facebook, Instagram, or TikTok credentials exist." },
-        { title: "Start messaging, scheduling and collaborating", body: "Inbox, meeting records, and drafts are available after sign-in." }
+        { title: "Connect supported services", body: "Facebook, Instagram, TikTok, and Google Ads stay unconfigured until official credentials and approvals exist." },
+        { title: "Start collaborating and managing campaigns", body: "Inbox, meeting records, and drafts are available after sign-in. Ads and publishing wait on providers." }
       ]
     },
     pricing: {
@@ -298,6 +298,7 @@ export const defaultSiteContent: SiteContent = {
     { q: "Can I manage Facebook, Instagram and TikTok from one dashboard?", a: "Those platforms are modeled in the product. Live publishing needs official OAuth credentials, token storage, and platform review." },
     { q: "Does every social platform support automatic publishing?", a: "No. Each official API has its own account, media, and permission rules. Missing credentials are shown as unconfigured, not as a successful post." },
     { q: "Can I create team conversations?", a: "Yes. Direct messages, group conversations, roles, and workspace isolation are implemented in the API." },
+    { q: "Does Takiia include group chats?", a: "Yes. Group conversations are a first-class conversation kind in the workspace inbox." },
     { q: "How do online meetings work?", a: "You can create meetings, store participants, and keep events on the workspace calendar. Plan participant limits are enforced." },
     { q: "Are audio and video calling available?", a: "Join records exist. Live audio and video are not treated as production calling until ICE, TURN or LiveKit, and a verified network path are configured and tested." },
     { q: "What happens when my subscription limit is reached?", a: "The API rejects the extra member, post, file, or meeting. The UI should offer an upgrade path rather than inventing capacity." },

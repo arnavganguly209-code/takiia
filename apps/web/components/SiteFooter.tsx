@@ -10,11 +10,18 @@ const columns = [
     links: [
       ["/messaging", "Messaging"],
       ["/meetings", "Meetings"],
-      ["/social", "Social Media Management"],
+      ["/social", "Social Media"],
       ["/ads", "Google Ads"],
-      ["/teams", "Team Collaboration"],
-      ["/scheduling", "Calendar & Scheduling"],
-      ["/files", "File Sharing"]
+      ["/teams", "Teams"],
+      ["/files", "Files"]
+    ]
+  },
+  {
+    title: "Features",
+    links: [
+      ["/features", "All features"],
+      ["/scheduling", "Calendar"],
+      ["/security", "Security"]
     ]
   },
   {
@@ -26,12 +33,20 @@ const columns = [
     ]
   },
   {
+    title: "Integrations",
+    links: [
+      ["/social", "Facebook"],
+      ["/social", "Instagram"],
+      ["/social", "TikTok"],
+      ["/ads", "Google Ads"]
+    ]
+  },
+  {
     title: "Resources",
     links: [
-      ["/features", "Features"],
+      ["/pricing", "Pricing"],
       ["/faq", "Help Center"],
-      ["/contact", "Contact"],
-      ["/security", "Security"]
+      ["/contact", "Contact"]
     ]
   },
   {
@@ -39,7 +54,6 @@ const columns = [
     links: [
       ["/solutions", "About Takiia"],
       ["/contact", "Contact"],
-      ["/pricing", "Pricing"],
       ["/billing", "Billing"]
     ]
   }
@@ -54,11 +68,11 @@ const legalLinks = [
 export function SiteFooter() {
   const site = useSite();
   return (
-    <footer className="border-t border-line bg-white">
-      <div className="site-wrap grid gap-12 py-16 md:grid-cols-2 xl:grid-cols-6">
-        <div className="xl:col-span-2">
+    <footer className="border-t border-line bg-mist">
+      <div className="site-wrap grid gap-10 py-16 md:grid-cols-2 xl:grid-cols-7">
+        <div className="xl:col-span-1">
           <Logo />
-          <p className="mt-4 max-w-sm text-sm leading-7 text-muted">{site.footer.blurb}</p>
+          <p className="mt-4 max-w-xs text-sm leading-7 text-muted">{site.footer.blurb}</p>
           <Link href={site.footer.ctaHref} className="btn-primary mt-6 px-5 py-2.5">
             {site.footer.ctaLabel}
           </Link>
@@ -68,7 +82,7 @@ export function SiteFooter() {
             <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-navy">{group.title}</p>
             <ul className="mt-4 space-y-2.5 text-sm text-muted">
               {group.links.map(([href, label]) => (
-                <li key={`${href}-${label}`}>
+                <li key={`${group.title}-${href}-${label}`}>
                   <Link href={href} className="font-medium transition hover:text-navy">
                     {label}
                   </Link>
@@ -78,7 +92,7 @@ export function SiteFooter() {
           </div>
         ))}
       </div>
-      <div className="border-t border-line bg-mist">
+      <div className="border-t border-line bg-white">
         <div className="site-wrap flex flex-col gap-3 py-5 text-xs font-medium text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Takiia. All rights reserved.</p>
           <ul className="flex flex-wrap gap-5">

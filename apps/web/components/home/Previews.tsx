@@ -9,7 +9,7 @@ export function WorkspacePreview() {
       <div className="grid lg:grid-cols-[13rem_1fr]">
         <aside className="hidden border-r border-line p-4 lg:block">
           <p className="px-2 text-xs font-bold text-navy">Workspace</p>
-          {["Home", "Inbox", "Meetings", "Social", "Calendar", "Teams", "Files"].map((item, index) => (
+          {["Home", "Inbox", "Meetings", "Social", "Ads", "Calendar", "Teams", "Files", "Analytics"].map((item, index) => (
             <div
               key={item}
               className={`mt-1 rounded-xl px-3 py-2 text-sm font-semibold ${index === 0 ? "bg-pale text-brand-500" : "text-muted"}`}
@@ -25,6 +25,8 @@ export function WorkspacePreview() {
           <PreviewCard title="Connected accounts" items={["Facebook · Not connected", "Instagram · Not connected", "TikTok · Not connected"]} />
           <PreviewCard title="Team activity" items={["Asha added a draft", "Rohit created a meeting"]} />
           <PreviewCard title="Ad campaigns" items={["Sample campaign · Not connected", "Budgets stay on Google Ads", "No live spend shown"]} />
+          <PreviewCard title="Notifications" items={["In-app notices after sign-in", "Email waits on SMTP"]} />
+          <PreviewCard title="Storage & plan" items={["Quota from the workspace plan", "Subscription checkout unconfigured"]} />
           <div className="rounded-2xl border border-line bg-mist p-4">
             <p className="text-sm font-semibold text-navy">October preview</p>
             <div className="mt-3 grid grid-cols-7 gap-1 text-center text-[10px] text-muted">
@@ -156,34 +158,44 @@ export function SocialPreview() {
 }
 
 export function AdsPreview() {
+  const rows = [
+    ["Brand search", "Not connected", "—", "—", "—", "—"],
+    ["Retargeting", "Requires token", "—", "—", "—", "—"],
+    ["Display", "Awaiting OAuth", "—", "—", "—", "—"]
+  ];
   return (
     <div className="overflow-hidden rounded-[1.75rem] border border-line bg-white shadow-glass">
-      <div className="border-b border-line px-5 py-3">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-3">
         <DemoLabel>Google Ads preview · sample labels only · no live spend</DemoLabel>
+        <span className="rounded-full bg-mist px-3 py-1 text-[11px] font-bold text-muted">Date range · unavailable</span>
       </div>
-      <div className="grid gap-3 p-4 md:grid-cols-2">
-        <div className="rounded-2xl border border-line p-4">
-          <p className="text-sm font-semibold text-navy">Campaign list</p>
-          {[
-            ["Brand search", "Paused · awaiting account"],
-            ["Retargeting", "Not connected"],
-            ["Display", "Requires developer token"]
-          ].map(([name, state]) => (
-            <div key={name} className="mt-3 flex items-center justify-between rounded-xl bg-mist px-3 py-2">
-              <p className="text-sm font-semibold text-navy">{name}</p>
-              <span className="text-[11px] font-semibold text-muted">{state}</span>
-            </div>
-          ))}
-        </div>
-        <div className="rounded-2xl border border-line p-4">
-          <p className="text-sm font-semibold text-navy">Performance</p>
-          <p className="mt-3 text-sm leading-7 text-muted">
-            Impressions, clicks, conversions, and cost stay blank until the official Google Ads API returns them for an
-            authorized customer.
-          </p>
-          <div className="mt-4 h-16 rounded-xl bg-mist" />
-          <p className="mt-3 text-xs text-muted">Sample chart shape only. Not customer metrics.</p>
-        </div>
+      <div className="overflow-x-auto p-4">
+        <table className="w-full min-w-[36rem] text-left text-sm">
+          <thead className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted">
+            <tr>
+              {["Campaign", "Status", "Budget", "Impr.", "Clicks", "Cost"].map((col) => (
+                <th key={col} className="pb-3 pr-3">
+                  {col}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row[0]} className="border-t border-line">
+                {row.map((cell, index) => (
+                  <td key={`${row[0]}-${index}`} className="py-3 pr-3 font-semibold text-navy">
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p className="mt-4 text-xs leading-6 text-muted">
+          Metrics stay blank until the official Google Ads API returns them. Advertising spend is billed by Google, not
+          by Takiia.
+        </p>
       </div>
     </div>
   );
@@ -191,25 +203,25 @@ export function AdsPreview() {
 
 export function MeetingPreview() {
   return (
-    <div className="overflow-hidden rounded-[1.75rem] border border-line bg-[#0f172a] p-4 text-white shadow-glass">
+    <div className="overflow-hidden rounded-[1.75rem] border border-line bg-white p-4 shadow-glass">
       <DemoLabel>Meeting interface preview · media path not claimed as production-ready</DemoLabel>
       <div className="mt-4 grid grid-cols-2 gap-2">
         {["Asha", "Rohit", "Neha", "Priya"].map((name) => (
-          <div key={name} className="flex aspect-video flex-col items-center justify-center rounded-2xl bg-[#1e293b]">
+          <div key={name} className="flex aspect-video flex-col items-center justify-center rounded-2xl bg-mist">
             <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 to-mint-400 font-bold text-navy">
               {name.slice(0, 1)}
             </span>
-            <span className="mt-2 text-sm">{name}</span>
+            <span className="mt-2 text-sm text-navy">{name}</span>
           </div>
         ))}
       </div>
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         <div className="flex gap-2">
-          <span className="rounded-full bg-white/10 px-3 py-2 text-xs">Mute</span>
-          <span className="rounded-full bg-white/10 px-3 py-2 text-xs">Camera</span>
-          <span className="rounded-full bg-rose-500 px-3 py-2 text-xs">Leave</span>
+          <span className="rounded-full bg-pale px-3 py-2 text-xs font-semibold text-navy">Mute</span>
+          <span className="rounded-full bg-pale px-3 py-2 text-xs font-semibold text-navy">Camera</span>
+          <span className="rounded-full bg-rose-500 px-3 py-2 text-xs font-semibold text-white">Leave</span>
         </div>
-        <div className="rounded-2xl bg-white/10 px-3 py-2 text-xs">
+        <div className="rounded-2xl bg-mist px-3 py-2 text-xs text-muted">
           Scheduler card · Client review Thu 10:00 · plan participant limits apply
         </div>
       </div>

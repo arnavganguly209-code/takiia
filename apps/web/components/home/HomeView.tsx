@@ -144,16 +144,35 @@ export function HomeView({ content = defaultSiteContent }: { content?: SiteConte
       <Section id="integrations" eyebrow={s.integrations.eyebrow} title={s.integrations.title} copy={s.integrations.copy}>
         <SectionImage src={s.integrations.imageSrc} />
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-          {s.integrations.cards.map((item, index) => (
-            <article key={item.title} className="rounded-[1.6rem] border border-line bg-white p-7 shadow-soft">
-              <span className={`flex h-12 w-12 items-center justify-center rounded-2xl text-lg font-black ${cardLooks[index % cardLooks.length].tile} ${cardLooks[index % cardLooks.length].ink}`}>
-                {item.title.slice(0, 1)}
-              </span>
-              <h3 className="mt-5 text-xl font-bold text-navy">{item.title}</h3>
-              <p className="mt-3 text-sm leading-7 text-muted">{item.body}</p>
-              <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.16em] text-[#7C93AA]">Requires credentials or approval</p>
-            </article>
-          ))}
+          {s.integrations.cards.map((item, index) => {
+            const href = item.title === "Google Ads" ? "/ads" : "/social";
+            return (
+              <article key={item.title} className="rounded-[1.6rem] border border-line bg-white p-7 shadow-soft">
+                <span className={`flex h-12 w-12 items-center justify-center rounded-2xl text-lg font-black ${cardLooks[index % cardLooks.length].tile} ${cardLooks[index % cardLooks.length].ink}`}>
+                  {item.title.slice(0, 1)}
+                </span>
+                <h3 className="mt-5 text-xl font-bold text-navy">{item.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-muted">{item.body}</p>
+                <dl className="mt-5 space-y-2 text-xs text-muted">
+                  <div className="flex justify-between gap-3">
+                    <dt className="font-bold uppercase tracking-[0.12em]">Status</dt>
+                    <dd>Not connected</dd>
+                  </div>
+                  <div className="flex justify-between gap-3">
+                    <dt className="font-bold uppercase tracking-[0.12em]">Permissions</dt>
+                    <dd>Official OAuth</dd>
+                  </div>
+                  <div className="flex justify-between gap-3">
+                    <dt className="font-bold uppercase tracking-[0.12em]">Availability</dt>
+                    <dd>Awaiting credentials</dd>
+                  </div>
+                </dl>
+                <Link href={href} className="btn-secondary mt-5 w-full">
+                  Setup
+                </Link>
+              </article>
+            );
+          })}
         </div>
       </Section>
 

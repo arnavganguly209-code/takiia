@@ -30,6 +30,7 @@ describe("home hero", () => {
     const hero = await fs.readFile(new URL("../components/home/HomeHero.tsx", import.meta.url), "utf8");
     const defaults = await fs.readFile(new URL("../lib/site-content.ts", import.meta.url), "utf8");
     expect(defaults).toContain("All in One Place.");
+    expect(defaults).toContain("Manage Social Media & Ads");
     expect(defaults).toContain("/brand/takiia-hero-blend.jpg");
     expect(hero).not.toContain("takiia-laptop.jpg");
     expect(hero).not.toContain("takiia-hero-scene.jpg");
