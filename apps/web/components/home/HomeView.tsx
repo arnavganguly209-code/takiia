@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { defaultPlanCatalog } from "@takiia/shared";
+import { FeatureCards } from "./FeatureCards";
 import { HomeHero } from "./HomeHero";
 import {
   CalendarPreview,
@@ -46,14 +47,16 @@ export function HomeView() {
       <HomeHero />
 
       <section className="border-y border-line bg-white">
-        <div className="site-wrap flex gap-2 overflow-x-auto py-5 [-ms-overflow-style:none] [scrollbar-width:none] sm:flex-wrap sm:justify-center sm:overflow-visible [&::-webkit-scrollbar]:hidden">
+        <div className="site-wrap grid grid-cols-2 gap-3 py-6 sm:grid-cols-4 lg:grid-cols-8">
           {capabilities.map((item) => (
             <Link
               key={item.label}
               href={item.href}
-              className="glass-soft inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-navy"
+              className="flex flex-col items-center gap-2 rounded-2xl border border-line bg-mist/70 px-2 py-4 text-center text-[12px] font-bold text-navy transition hover:border-brand-500/30 hover:bg-white"
             >
-              <LineIcon d={item.d} />
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-brand-500 shadow-soft">
+                <LineIcon d={item.d} />
+              </span>
               {item.label}
             </Link>
           ))}
@@ -69,28 +72,32 @@ export function HomeView() {
         <div className="grid gap-5 md:grid-cols-3">
           {[
             {
+              n: "01",
               title: "Too Many Tools",
               body: "Chat, meetings, and publishing often live in separate products. Switching tabs adds context you have to rebuild every time.",
               surface: "bg-pale"
             },
             {
+              n: "02",
               title: "Scattered Work",
               body: "Messages, drafts, and schedules fragment across inboxes. Takiia keeps those records in one workspace membership model.",
               surface: "bg-white"
             },
             {
+              n: "03",
               title: "Limited Visibility",
               body: "A centralized view of conversations, meetings, and publishing status is useful only when it reads authorized workspace data.",
               surface: "bg-mintsoft"
             }
           ].map((item) => (
-            <article key={item.title} className={`card-hover rounded-3xl border border-line p-6 ${item.surface}`}>
-              <h3 className="text-xl font-semibold text-navy">{item.title}</h3>
+            <article key={item.title} className={`card-hover rounded-[1.6rem] border border-line p-7 ${item.surface}`}>
+              <p className="text-sm font-bold text-transparent bg-gradient-to-r from-cyan-400 to-mint-400 bg-clip-text">{item.n}</p>
+              <h3 className="mt-3 text-xl font-bold text-navy">{item.title}</h3>
               <p className="mt-3 text-sm leading-7 text-muted">{item.body}</p>
             </article>
           ))}
         </div>
-        <p className="mt-6 text-sm text-muted">
+        <p className="mt-8 text-sm leading-7 text-muted">
           Takiia is one signed-in workspace. It does not replace every outside service, and it does not invent time-saved
           claims.
         </p>
@@ -114,23 +121,38 @@ export function HomeView() {
         action={{ href: "/messaging", label: "Explore Messaging" }}
       >
         <div className="grid items-start gap-8 lg:grid-cols-2">
-          <ul className="space-y-3 text-sm leading-7 text-muted">
-            {[
-              "Direct and group messaging scoped to a workspace",
-              "Team conversations with membership-checked reads",
-              "Message history and pagination",
-              "Read and unread state with unread counts",
-              "Search and filtering",
-              "Authenticated image and document attachments",
-              "In-app notifications",
-              "Workspace access controls on the server"
-            ].map((item) => (
-              <li key={item} className="flex gap-3">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-r from-cyan-400 to-mint-400" />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
+          <FeatureCards
+            items={[
+              {
+                title: "Direct and group chat",
+                body: "Conversations stay scoped to a workspace, with membership-checked reads.",
+                tile: "bg-[#E8F3FF]",
+                ink: "text-[#2F6FE4]",
+                d: "M5 8h10M5 12h6M7 17l-2 3 4-2h7a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7a3 3 0 0 0 3 3z"
+              },
+              {
+                title: "History and search",
+                body: "Message history, pagination, search, and unread counts stay with the inbox.",
+                tile: "bg-[#E6F8FF]",
+                ink: "text-[#14B4D4]",
+                d: "M11 5h8M5 5h2M5 12h14M5 19h8"
+              },
+              {
+                title: "Authenticated files",
+                body: "Image and document attachments download only after a signed-in, authorized request.",
+                tile: "bg-[#F4ECFF]",
+                ink: "text-[#8B5CF6]",
+                d: "M7 4h7l4 4v12H7zM14 4v4h4"
+              },
+              {
+                title: "Workspace access",
+                body: "In-app notifications and server-side access controls follow workspace membership.",
+                tile: "bg-[#E8FBF4]",
+                ink: "text-[#14B981]",
+                d: "M12 12a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm-6 8a6 6 0 0 1 12 0"
+              }
+            ]}
+          />
           <MessagingPreview />
         </div>
       </Section>
@@ -143,23 +165,39 @@ export function HomeView() {
         copy="Create content, organize your publishing calendar and manage supported social accounts from one workspace. Automatic publishing waits on official Facebook, Instagram, and TikTok credentials."
         action={{ href: "/social", label: "Explore Social Media Management" }}
       >
-        <div className="grid items-start gap-8 lg:grid-cols-[0.85fr_1.15fr]">
-          <ul className="space-y-3 text-sm leading-7 text-muted">
-            {[
-              "Connect supported social accounts when credentials exist",
-              "Create and edit drafts",
-              "Upload supported media",
-              "Schedule content",
-              "View the content calendar",
-              "Monitor publishing status, retries, and failures",
-              "Review analytics only after a connected account can supply them"
-            ].map((item) => (
-              <li key={item} className="flex gap-3">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-r from-cyan-400 to-mint-400" />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
+        <div className="grid items-start gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <FeatureCards
+            items={[
+              {
+                title: "Connect supported accounts",
+                body: "Facebook, Instagram, and TikTok appear as connected only after official credentials exist.",
+                tile: "bg-[#E8F3FF]",
+                ink: "text-[#2F6FE4]",
+                d: "M8 12h8M12 8v8M7 5h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"
+              },
+              {
+                title: "Drafts and media",
+                body: "Create drafts, edit captions, and upload supported media before anything is queued.",
+                tile: "bg-[#F4ECFF]",
+                ink: "text-[#8B5CF6]",
+                d: "M8 7h8v10H8zM10 10h4M10 13h4"
+              },
+              {
+                title: "Calendar and queue",
+                body: "Schedule content and watch publishing status, retries, and failures in one place.",
+                tile: "bg-[#E6F8FF]",
+                ink: "text-[#14B4D4]",
+                d: "M7 4v3M17 4v3M5 9h14M6 6h12a2 2 0 0 1 2 2v11H4V8a2 2 0 0 1 2-2z"
+              },
+              {
+                title: "Analytics when live",
+                body: "Charts stay sample-only until a connected account can supply real publishing data.",
+                tile: "bg-[#E8FBF4]",
+                ink: "text-[#14B981]",
+                d: "M5 19V9M10 19V5M15 19v-7M20 19V8"
+              }
+            ]}
+          />
           <SocialPreview />
         </div>
       </Section>
@@ -172,23 +210,38 @@ export function HomeView() {
         action={{ href: "/meetings", label: "Explore Meetings" }}
       >
         <div className="grid items-start gap-8 lg:grid-cols-2">
-          <ul className="space-y-3 text-sm leading-7 text-muted">
-            {[
-              "Meeting links and join records",
-              "Meeting scheduling on the workspace calendar",
-              "Host and participant roles stored with the meeting",
-              "Audio and video controls after TURN or LiveKit is verified",
-              "Group meeting rooms in the data model",
-              "Screen sharing where the media path supports it",
-              "In-app reminders when notification delivery is configured",
-              "Participant limits from the workspace plan"
-            ].map((item) => (
-              <li key={item} className="flex gap-3">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-r from-cyan-400 to-mint-400" />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
+          <FeatureCards
+            items={[
+              {
+                title: "Meeting records",
+                body: "Create meetings, store hosts and participants, and keep join records with the inbox.",
+                tile: "bg-[#E6F8FF]",
+                ink: "text-[#14B4D4]",
+                d: "M15 10l4-2v8l-4-2M5 8h10v8H5z"
+              },
+              {
+                title: "Calendar scheduling",
+                body: "Meetings land on the workspace calendar. Participant limits come from the plan.",
+                tile: "bg-[#E8F3FF]",
+                ink: "text-[#2F6FE4]",
+                d: "M7 4v3M17 4v3M5 10h14M8 14h3M8 18h8"
+              },
+              {
+                title: "Live media path",
+                body: "Audio, video, mute, camera, and screen share wait on a verified TURN or LiveKit path.",
+                tile: "bg-[#F4ECFF]",
+                ink: "text-[#8B5CF6]",
+                d: "M12 6a5 5 0 0 1 5 5v4l2 2H5l2-2v-4a5 5 0 0 1 5-5z"
+              },
+              {
+                title: "Reminders",
+                body: "In-app reminders send when notification delivery is configured. Email waits on SMTP.",
+                tile: "bg-[#E8FBF4]",
+                ink: "text-[#14B981]",
+                d: "M12 6a5 5 0 0 1 5 5v4l2 2H5l2-2v-4a5 5 0 0 1 5-5zM10 20h4"
+              }
+            ]}
+          />
           <MeetingPreview />
         </div>
       </Section>
@@ -201,7 +254,41 @@ export function HomeView() {
         copy="Keep your people, conversations, shared workspaces and everyday coordination organized. Task boards are not part of the current product."
         action={{ href: "/teams", label: "Explore Teams" }}
       >
-        <TeamPreview />
+        <div className="grid items-start gap-8 lg:grid-cols-2">
+          <FeatureCards
+            items={[
+              {
+                title: "Members and roles",
+                body: "Owners, admins, and members stay behind workspace membership checks.",
+                tile: "bg-[#E8F3FF]",
+                ink: "text-[#2F6FE4]",
+                d: "M12 12a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm-6 8a6 6 0 0 1 12 0"
+              },
+              {
+                title: "Invites",
+                body: "The first account creates a workspace you can invite others into.",
+                tile: "bg-[#E6F8FF]",
+                ink: "text-[#14B4D4]",
+                d: "M4 8h16M4 12h10M4 16h7"
+              },
+              {
+                title: "Shared files",
+                body: "Documents stay attached to conversations and the workspace that owns them.",
+                tile: "bg-[#F4ECFF]",
+                ink: "text-[#8B5CF6]",
+                d: "M7 4h7l4 4v12H7z"
+              },
+              {
+                title: "Audit events",
+                body: "Membership and access events stay in the workspace record. No invented activity feed stats.",
+                tile: "bg-[#E8FBF4]",
+                ink: "text-[#14B981]",
+                d: "M5 12h14M12 5v14"
+              }
+            ]}
+          />
+          <TeamPreview />
+        </div>
       </Section>
 
       <Section
@@ -231,21 +318,21 @@ export function HomeView() {
         title="Connect the Platforms You Already Use."
         copy="Bring supported social publishing workflows into your Takiia workspace. No account is shown as connected unless an authorized connection exists."
       >
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-3">
           {[
-            ["Facebook", "Page and post publishing after official app review."],
-            ["Instagram", "Supported media and permissions after official credentials."],
-            ["TikTok", "Account connection and publishing after official approval."]
-          ].map(([name, body]) => (
-            <article key={name} className="rounded-3xl border border-line bg-white p-6">
-              <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-pale text-sm font-bold text-brand-500">
-                  {name.slice(0, 1)}
-                </span>
-                <h3 className="text-lg font-semibold text-navy">{name}</h3>
-              </div>
+            ["Facebook", "Page and post publishing after official app review.", "bg-[#E8F3FF]", "text-[#2F6FE4]"],
+            ["Instagram", "Supported media and permissions after official credentials.", "bg-[#F4ECFF]", "text-[#8B5CF6]"],
+            ["TikTok", "Account connection and publishing after official approval.", "bg-[#E8FBF4]", "text-[#142033]"]
+          ].map(([name, body, tile, ink]) => (
+            <article key={name} className="rounded-[1.6rem] border border-line bg-white p-7 shadow-soft">
+              <span className={`flex h-12 w-12 items-center justify-center rounded-2xl text-lg font-black ${tile} ${ink}`}>
+                {name.slice(0, 1)}
+              </span>
+              <h3 className="mt-5 text-xl font-bold text-navy">{name}</h3>
               <p className="mt-3 text-sm leading-7 text-muted">{body}</p>
-              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.14em] text-muted">Requires credentials or approval</p>
+              <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.16em] text-[#7C93AA]">
+                Requires credentials or approval
+              </p>
             </article>
           ))}
         </div>
@@ -284,16 +371,16 @@ export function HomeView() {
             ["Connect supported social accounts", "Only after official Facebook, Instagram, or TikTok credentials exist."],
             ["Start messaging, scheduling and collaborating", "Inbox, meeting records, and drafts are available after sign-in."]
           ].map(([title, body], index) => (
-            <li key={title} className="rounded-3xl border border-line bg-white p-5">
-              <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-cyan-400 to-mint-400 bg-clip-text">
+            <li key={title} className="relative rounded-[1.6rem] border border-line bg-white p-6 shadow-soft">
+              <span className="text-3xl font-black text-transparent bg-gradient-to-r from-cyan-400 to-mint-400 bg-clip-text">
                 0{index + 1}
               </span>
-              <p className="mt-3 font-semibold text-navy">{title}</p>
+              <p className="mt-4 font-bold text-navy">{title}</p>
               <p className="mt-2 text-sm leading-6 text-muted">{body}</p>
             </li>
           ))}
         </ol>
-        <Link href="/signup" className="btn-primary mt-8 px-6 py-3">
+        <Link href="/signup" className="btn-primary mt-10 px-7 py-3">
           Get Started
         </Link>
       </Section>
@@ -309,15 +396,22 @@ export function HomeView() {
           {Object.entries(defaultPlanCatalog).map(([key, plan]) => (
             <article
               key={key}
-              className={`rounded-3xl border p-6 ${key === "pro" ? "border-brand-500/40 bg-pale shadow-glass" : "border-line bg-white"}`}
+              className={`rounded-[1.6rem] border p-6 ${
+                key === "pro" ? "border-cyan-400/50 bg-pale shadow-glass" : "border-line bg-white shadow-soft"
+              }`}
             >
-              <h3 className="text-xl font-semibold text-navy">{plan.name}</h3>
-              <p className="mt-2 text-3xl font-semibold text-navy">
+              {key === "pro" ? (
+                <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.16em] text-brand-500">Recommended default</p>
+              ) : (
+                <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.16em] text-transparent">Plan</p>
+              )}
+              <h3 className="text-xl font-bold text-navy">{plan.name}</h3>
+              <p className="mt-2 text-3xl font-bold text-navy">
                 ${plan.proposedMonthlyUsd}
                 <span className="text-sm font-medium text-muted"> / month</span>
               </p>
-              <p className="mt-3 min-h-16 text-sm text-muted">{plan.description}</p>
-              <ul className="mt-5 space-y-2 text-sm text-muted">
+              <p className="mt-3 min-h-16 text-sm leading-6 text-muted">{plan.description}</p>
+              <ul className="mt-5 space-y-2.5 text-sm text-muted">
                 <li>{plan.limits.members} members</li>
                 <li>{plan.limits.socialAccounts} social accounts</li>
                 <li>{plan.limits.scheduledPostsPerMonth} scheduled posts / month</li>
@@ -325,7 +419,7 @@ export function HomeView() {
                 <li>{plan.limits.meetingsPerMonth} meetings / month</li>
                 <li>Checkout unconfigured until a payment provider is added</li>
               </ul>
-              <Link href="/signup" className="btn-secondary mt-6 w-full">
+              <Link href="/signup" className={key === "pro" ? "btn-primary mt-6 w-full" : "btn-secondary mt-6 w-full"}>
                 Get Started
               </Link>
             </article>
@@ -334,27 +428,30 @@ export function HomeView() {
       </Section>
 
       <Section id="faq" tone="mist" eyebrow="FAQ" title="Questions? We’re Here to Help.">
-        <div className="space-y-3">
+        <div className="grid gap-3 lg:grid-cols-2">
           {faqs.map(([q, a]) => (
-            <details key={q} className="rounded-2xl border border-line bg-white p-5">
-              <summary className="cursor-pointer font-semibold text-navy">{q}</summary>
+            <details key={q} className="rounded-2xl border border-line bg-white px-5 py-4 shadow-soft">
+              <summary className="cursor-pointer font-bold text-navy">{q}</summary>
               <p className="mt-3 text-sm leading-7 text-muted">{a}</p>
             </details>
           ))}
         </div>
       </Section>
 
-      <section className="bg-[#edf6fb] px-5 py-20">
-        <div className="site-wrap overflow-hidden rounded-[2rem] border border-line bg-white px-8 py-14 shadow-soft md:px-14">
-          <h2 className="max-w-3xl text-4xl font-bold tracking-tight text-navy">Bring Your Conversations and Workflows Together.</h2>
-          <p className="mt-4 max-w-2xl text-muted">
+      <section className="bg-[#0B1730] px-5 py-20">
+        <div className="site-wrap overflow-hidden rounded-[2rem] bg-[linear-gradient(135deg,rgba(34,199,232,0.16),rgba(62,230,180,0.12))] px-8 py-14 md:px-14">
+          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#7C93AA]">Start in one workspace</p>
+          <h2 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-white">
+            Bring Your Conversations and Workflows Together.
+          </h2>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-white/70">
             Manage communication, meetings, team collaboration and social publishing from one organized workspace.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/signup" className="btn-primary px-6 py-3">
+            <Link href="/signup" className="btn-primary px-7 py-3">
               Get Started
             </Link>
-            <Link href="/pricing" className="btn-secondary px-6 py-3">
+            <Link href="/pricing" className="inline-flex items-center justify-center rounded-full bg-white px-7 py-3 text-sm font-bold text-[#0B1730]">
               View Pricing
             </Link>
           </div>

@@ -25,7 +25,8 @@ const columns = [
     title: "Resources",
     links: [
       ["/faq", "Help Center"],
-      ["/contact", "Contact"]
+      ["/contact", "Contact"],
+      ["/security", "Security"]
     ]
   },
   {
@@ -60,7 +61,7 @@ export function SiteFooter() {
         </div>
         {columns.map((group) => (
           <div key={group.title}>
-            <p className="text-xs font-bold uppercase tracking-[0.16em] text-navy">{group.title}</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-navy">{group.title}</p>
             <ul className="mt-4 space-y-2.5 text-sm text-muted">
               {group.links.map(([href, label]) => (
                 <li key={`${href}-${label}`}>
