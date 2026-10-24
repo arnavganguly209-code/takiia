@@ -20,11 +20,11 @@ export function Section({
 }) {
   return (
     <section id={id} className={`${tone === "mist" ? "bg-mist" : "bg-paper"} bg-section-lines`}>
-      <div className="site-wrap py-20">
-        {eyebrow ? <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-500">{eyebrow}</p> : null}
+      <div className="site-wrap py-20 sm:py-24">
+        {eyebrow ? <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#7C93AA]">{eyebrow}</p> : null}
         <div className="mt-3 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl">
-            <h2 className="text-3xl font-semibold tracking-tight text-navy sm:text-4xl">{title}</h2>
+            <h2 className="text-3xl font-bold tracking-tight text-navy sm:text-4xl">{title}</h2>
             {copy ? <p className="mt-4 max-w-2xl text-base leading-8 text-muted">{copy}</p> : null}
           </div>
           {action ? (

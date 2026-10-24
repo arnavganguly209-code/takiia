@@ -46,7 +46,7 @@ const legalLinks = [
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-line bg-mist">
+    <footer className="border-t border-line bg-white">
       <div className="site-wrap grid gap-12 py-16 md:grid-cols-2 xl:grid-cols-6">
         <div className="xl:col-span-2">
           <Logo />
@@ -54,15 +54,17 @@ export function SiteFooter() {
             Takiia brings messaging, meetings, team collaboration and social publishing together in one organized
             workspace.
           </p>
-          <div className="mt-5 h-1 w-16 rounded-full bg-gradient-to-r from-cyan-400 to-mint-400" />
+          <Link href="/signup" className="btn-primary mt-6 px-5 py-2.5">
+            Get Started
+          </Link>
         </div>
         {columns.map((group) => (
           <div key={group.title}>
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-navy">{group.title}</p>
-            <ul className="mt-4 space-y-2 text-sm text-muted">
+            <ul className="mt-4 space-y-2.5 text-sm text-muted">
               {group.links.map(([href, label]) => (
                 <li key={`${href}-${label}`}>
-                  <Link href={href} className="transition hover:text-navy">
+                  <Link href={href} className="font-medium transition hover:text-navy">
                     {label}
                   </Link>
                 </li>
@@ -71,10 +73,10 @@ export function SiteFooter() {
           </div>
         ))}
       </div>
-      <div className="border-t border-line">
-        <div className="site-wrap flex flex-col gap-3 py-5 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+      <div className="border-t border-line bg-mist">
+        <div className="site-wrap flex flex-col gap-3 py-5 text-xs font-medium text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Takiia. All rights reserved.</p>
-          <ul className="flex flex-wrap gap-4">
+          <ul className="flex flex-wrap gap-5">
             {legalLinks.map(([href, label]) => (
               <li key={href}>
                 <Link href={href} className="hover:text-navy">

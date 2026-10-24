@@ -45,8 +45,8 @@ export function HomeView() {
     <div>
       <HomeHero />
 
-      <section className="border-y border-line bg-white/90">
-        <div className="site-wrap flex gap-2 overflow-x-auto py-4 [-ms-overflow-style:none] [scrollbar-width:none] sm:flex-wrap sm:overflow-visible [&::-webkit-scrollbar]:hidden">
+      <section className="border-y border-line bg-white">
+        <div className="site-wrap flex gap-2 overflow-x-auto py-5 [-ms-overflow-style:none] [scrollbar-width:none] sm:flex-wrap sm:justify-center sm:overflow-visible [&::-webkit-scrollbar]:hidden">
           {capabilities.map((item) => (
             <Link
               key={item.label}
@@ -344,9 +344,9 @@ export function HomeView() {
         </div>
       </Section>
 
-      <section className="bg-hero px-5 py-20">
-        <div className="site-wrap overflow-hidden rounded-[2rem] border border-white/80 bg-white/70 px-8 py-14 shadow-glass backdrop-blur-xl md:px-14">
-          <h2 className="max-w-3xl text-4xl font-semibold text-navy">Bring Your Conversations and Workflows Together.</h2>
+      <section className="bg-[#edf6fb] px-5 py-20">
+        <div className="site-wrap overflow-hidden rounded-[2rem] border border-line bg-white px-8 py-14 shadow-soft md:px-14">
+          <h2 className="max-w-3xl text-4xl font-bold tracking-tight text-navy">Bring Your Conversations and Workflows Together.</h2>
           <p className="mt-4 max-w-2xl text-muted">
             Manage communication, meetings, team collaboration and social publishing from one organized workspace.
           </p>
