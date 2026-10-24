@@ -26,8 +26,7 @@ describe("home hero", () => {
     const fs = await import("node:fs/promises");
     const hero = await fs.readFile(new URL("../components/home/HomeHero.tsx", import.meta.url), "utf8");
     expect(hero).toContain("All in One Place.");
-    expect(hero).toContain("/brand/takiia-hero-match.jpg");
-    expect(hero).not.toContain("object-cover");
+    expect(hero).toContain("/brand/takiia-hero-blend.jpg");
     expect(hero).not.toContain("takiia-laptop.jpg");
     expect(hero).not.toContain("takiia-hero-scene.jpg");
   });

@@ -9,8 +9,15 @@ const features = [
 
 export function HomeHero() {
   return (
-    <section className="grid h-[calc(100svh-4.75rem)] grid-rows-[auto_minmax(0,1fr)] overflow-hidden bg-[#eef6fb] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:grid-rows-1">
-      <div className="flex items-center px-6 py-4 sm:px-10 lg:px-14">
+    <section className="relative h-[calc(100svh-4.75rem)] overflow-hidden bg-[#edf6fb]">
+      <img
+        src="/brand/takiia-hero-blend.jpg"
+        alt="Takiia workspace on a laptop beside a team meeting on a phone"
+        width={2560}
+        height={1440}
+        className="absolute inset-0 h-full w-full object-cover object-[76%_82%]"
+      />
+      <div className="relative z-10 flex h-full items-center px-6 sm:px-10 lg:w-[46%] lg:px-14">
         <div className="w-full max-w-[34rem]">
           <p className="text-[12px] font-bold uppercase tracking-[0.22em] text-[#7C93AA]">All-in-one workspace</p>
           <h1 className="mt-3 text-[clamp(2rem,5.2vh,3.55rem)] font-black leading-[0.96] tracking-[-0.045em] text-[#0B1730]">
@@ -53,15 +60,6 @@ export function HomeHero() {
             ))}
           </ul>
         </div>
-      </div>
-      <div className="relative min-h-0">
-        <img
-          src="/brand/takiia-hero-match.jpg"
-          alt="Takiia workspace on a laptop beside a team meeting on a phone"
-          width={2560}
-          height={1920}
-          className="absolute inset-0 h-full w-full object-contain object-center"
-        />
       </div>
     </section>
   );
