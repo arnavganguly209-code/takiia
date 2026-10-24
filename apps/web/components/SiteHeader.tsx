@@ -14,13 +14,13 @@ export function SiteHeader() {
         <Link href="/" aria-label="Takiia home" className="shrink-0">
           <Logo />
         </Link>
-        <nav className="hidden items-center gap-0.5 text-sm font-semibold text-navy xl:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-1 text-[15px] font-bold tracking-[-0.01em] text-[#0B1730] xl:flex" aria-label="Primary">
           <Dropdown label="Product" items={productLinks} />
           {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-full px-3 py-2 text-navy/90 transition hover:bg-white/70 hover:text-navy"
+              className="rounded-full px-3 py-2 text-[#0B1730] transition hover:bg-white/70"
             >
               {item.label}
             </Link>
@@ -28,7 +28,7 @@ export function SiteHeader() {
           <Dropdown label="Resources" items={resourceLinks} />
         </nav>
         <div className="hidden items-center gap-3 xl:flex">
-          <Link href="/login" className="text-sm font-semibold text-navy">
+          <Link href="/login" className="text-[15px] font-bold text-[#0B1730]">
             Log in
           </Link>
           <Link href="/signup" className="btn-primary">
@@ -97,7 +97,7 @@ function Dropdown({ label, items }: { label: string; items: Array<{ href: string
     <div className="relative" ref={ref}>
       <button
         type="button"
-        className="rounded-full px-3 py-2 font-semibold text-navy/90 transition hover:bg-white/70 hover:text-navy"
+        className="rounded-full px-3 py-2 font-bold text-[#0B1730] transition hover:bg-white/70"
         aria-expanded={open}
         aria-controls={id}
         onClick={() => setOpen((value) => !value)}
