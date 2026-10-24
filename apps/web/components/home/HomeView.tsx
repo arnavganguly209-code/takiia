@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { defaultPlanCatalog } from "@takiia/shared";
+import { HeroStage } from "./HeroStage";
 
 const capabilities = ["Messages", "Meetings", "Social Media", "Teams", "Files", "Events", "Notifications", "Scheduling"];
 
@@ -34,64 +34,59 @@ const faqs = [
   ["How are customer files and social tokens protected?", "Downloads are authenticated and membership-checked. Provider tokens belong on the server and are never shown in the browser."]
 ];
 
+const heroFeatures = [
+  { label: "Team Messaging", icon: "chat" },
+  { label: "Online Meetings", icon: "video" },
+  { label: "Social Publishing", icon: "share" },
+  { label: "Team Collaboration", icon: "team" }
+] as const;
+
 export function HomeView() {
   return (
     <div>
       <section className="relative overflow-hidden bg-hero">
-        <div className="pointer-events-none absolute -left-20 top-10 h-64 w-64 rounded-full bg-cyan-400/20 blur-3xl" />
-        <div className="pointer-events-none absolute right-0 top-0 h-72 w-72 rounded-full bg-mint-400/20 blur-3xl" />
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 pb-16 pt-14 lg:grid-cols-[1.05fr_0.95fr] lg:pt-20">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-brand-500">
-              One workspace. Better collaboration.
-            </p>
-            <h1 className="mt-5 text-5xl font-semibold leading-[1.05] text-navy sm:text-6xl">
-              Chat, Meet and Manage Social Media — All in One Place.
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_18%,rgba(34,199,232,0.18),transparent_36%),radial-gradient(circle_at_88%_10%,rgba(103,232,197,0.2),transparent_34%)]" />
+        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 pb-20 pt-10 lg:grid-cols-[0.92fr_1.08fr] lg:gap-8 lg:pb-28 lg:pt-14">
+          <div className="max-w-xl">
+            <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-navy/70">All-in-one workspace</p>
+            <h1 className="mt-4 text-[2.15rem] font-semibold leading-[1.08] tracking-tight text-navy sm:text-5xl lg:text-[3.4rem]">
+              Chat, Meet and Manage{" "}
+              <span className="bg-gradient-to-r from-cyan-400 to-mint-400 bg-clip-text text-transparent">Social Media</span>{" "}
+              — All in One Place.
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-muted">
+            <p className="mt-5 max-w-lg text-base leading-7 text-muted sm:text-lg sm:leading-8">
               Bring your conversations, online meetings, team collaboration and social publishing together in one simple
               workspace. Spend less time switching tools and more time getting work done.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/signup" className="btn-primary px-6 py-3">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link href="/signup" className="btn-primary gap-2 px-6 py-3">
                 Get Started
+                <span aria-hidden="true">→</span>
               </Link>
-              <Link href="/features" className="btn-secondary px-6 py-3">
-                Explore the Platform
+              <Link href="#dashboard" className="btn-secondary gap-2 px-6 py-3">
+                <span aria-hidden="true" className="flex h-5 w-5 items-center justify-center rounded-full bg-navy text-[10px] text-white">
+                  ▶
+                </span>
+                Watch Video
               </Link>
             </div>
-            <p className="mt-4 text-sm text-muted">
-              One signed-in workspace for inbox, meetings, and publishing queues. No invented customer counts.
-            </p>
-            <div className="mt-8 grid max-w-xl grid-cols-2 gap-3 text-sm">
-              {["Team Messaging", "Online Meetings", "Social Publishing", "Shared Workspaces"].map((item) => (
-                <div key={item} className="glass rounded-2xl px-4 py-3 font-medium text-navy">
-                  {item}
+            <div className="mt-8 grid grid-cols-2 gap-3 text-sm sm:max-w-lg">
+              {heroFeatures.map((item) => (
+                <div key={item.label} className="glass-soft flex items-center gap-3 rounded-2xl px-3 py-3 font-semibold text-navy">
+                  <FeatureGlyph name={item.icon} />
+                  {item.label}
                 </div>
               ))}
             </div>
           </div>
-          <div className="relative">
-            <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-br from-cyan-400/20 via-transparent to-mint-400/20 blur-2xl" />
-            <div className="glass relative overflow-hidden rounded-[2rem] p-3">
-              <Image
-                src="/brand/takiia-hero.jpg"
-                alt="Takiia workspace preview across desktop and mobile"
-                width={1600}
-                height={1000}
-                priority
-                quality={95}
-                className="h-auto w-full rounded-[1.5rem] object-cover"
-              />
-            </div>
-          </div>
+          <HeroStage />
         </div>
       </section>
 
-      <section className="border-y border-line bg-white">
-        <div className="mx-auto flex max-w-7xl flex-wrap gap-3 px-5 py-6">
+      <section className="border-y border-line/80 bg-white/80">
+        <div className="mx-auto flex max-w-7xl flex-wrap justify-center gap-2 px-5 py-5 sm:justify-start">
           {capabilities.map((item) => (
-            <span key={item} className="rounded-full border border-line bg-mist px-4 py-2 text-sm text-navy">
+            <span key={item} className="rounded-full border border-line bg-mist px-4 py-2 text-sm font-semibold text-navy">
               {item}
             </span>
           ))}
@@ -133,11 +128,14 @@ export function HomeView() {
               "In-app notifications and responsive layouts",
               "Presence and typing indicators where the live socket session is connected"
             ].map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item} className="flex gap-3">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-r from-cyan-400 to-mint-400" />
+                <span>{item}</span>
+              </li>
             ))}
           </ul>
           <div className="glass rounded-3xl p-5">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-500">Demo preview</p>
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-500">Demo preview</p>
             <div className="mt-4 space-y-3">
               <ChatBubble name="Asha" text="The campaign draft is in the social queue." />
               <ChatBubble name="Rohit" text="I moved the client review to Thursday 10:00." align="end" />
@@ -248,8 +246,10 @@ export function HomeView() {
             "Start messaging, scheduling, and collaborating"
           ].map((step, index) => (
             <li key={step} className="glass rounded-3xl p-5">
-              <span className="text-2xl font-semibold text-brand-500">0{index + 1}</span>
-              <p className="mt-3 font-medium text-navy">{step}</p>
+              <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-cyan-400 to-mint-400 bg-clip-text">
+                0{index + 1}
+              </span>
+              <p className="mt-3 font-semibold text-navy">{step}</p>
             </li>
           ))}
         </ol>
@@ -285,7 +285,7 @@ export function HomeView() {
           {Object.entries(defaultPlanCatalog).map(([key, plan]) => (
             <article
               key={key}
-              className={`rounded-3xl border p-6 ${key === "pro" ? "border-brand-500 bg-pale shadow-glass" : "glass"}`}
+              className={`rounded-3xl border p-6 ${key === "pro" ? "border-cyan-400/60 bg-white shadow-glass" : "glass"}`}
             >
               <h3 className="text-xl font-semibold text-navy">{plan.name}</h3>
               <p className="mt-2 text-3xl font-semibold text-navy">
@@ -320,7 +320,7 @@ export function HomeView() {
         <div className="space-y-3">
           {faqs.map(([q, a]) => (
             <details key={q} className="glass rounded-2xl p-5">
-              <summary className="cursor-pointer font-medium text-navy">{q}</summary>
+              <summary className="cursor-pointer font-semibold text-navy">{q}</summary>
               <p className="mt-3 text-sm leading-7 text-muted">{a}</p>
             </details>
           ))}
@@ -334,16 +334,32 @@ export function HomeView() {
             Start with the tools your team needs and grow with a plan that fits your workflow.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/signup" className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-navy">
+            <Link href="/signup" className="btn-primary px-6 py-3">
               Get Started
             </Link>
-            <Link href="/pricing" className="rounded-full border border-white/30 px-6 py-3 text-sm font-semibold">
+            <Link href="/pricing" className="rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white">
               View Pricing
             </Link>
           </div>
         </div>
       </section>
     </div>
+  );
+}
+
+function FeatureGlyph({ name }: { name: "chat" | "video" | "share" | "team" }) {
+  const paths = {
+    chat: "M5 8h10M5 12h6M7 17l-2 3 4-2h7a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7a3 3 0 0 0 3 3z",
+    video: "M15 10l4-2v8l-4-2M5 8h10v8H5z",
+    share: "M8 12h8M12 8v8M7 5h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z",
+    team: "M12 12a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm-7 8a5 5 0 0 1 10 0M17 11a2.5 2.5 0 1 0-1-4.8"
+  };
+  return (
+    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-pale text-brand-500">
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <path d={paths[name]} strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </span>
   );
 }
 
@@ -365,7 +381,7 @@ function Section({
   return (
     <section id={id} className={tone === "mist" ? "bg-mist" : "bg-paper"}>
       <div className="mx-auto max-w-7xl px-5 py-16">
-        {eyebrow ? <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-500">{eyebrow}</p> : null}
+        {eyebrow ? <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-500">{eyebrow}</p> : null}
         <h2 className="mt-3 max-w-3xl text-3xl font-semibold text-navy sm:text-4xl">{title}</h2>
         {copy ? <p className="mt-4 max-w-3xl text-base leading-8 text-muted">{copy}</p> : null}
         {children ? <div className="mt-8">{children}</div> : null}
@@ -376,7 +392,7 @@ function Section({
 
 function ChatBubble({ name, text, align }: { name: string; text: string; align?: "end" }) {
   return (
-    <div className={align === "end" ? "ml-8 rounded-2xl bg-brand-500 px-4 py-3 text-white" : "mr-8 rounded-2xl bg-pale px-4 py-3"}>
+    <div className={align === "end" ? "ml-8 rounded-2xl bg-gradient-to-r from-cyan-400 to-mint-400 px-4 py-3 text-navy" : "mr-8 rounded-2xl bg-pale px-4 py-3"}>
       <p className="text-xs font-semibold">{name}</p>
       <p className="mt-1 text-sm">{text}</p>
     </div>

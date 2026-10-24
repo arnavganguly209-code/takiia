@@ -12,3 +12,12 @@ describe("site metadata", () => {
     );
   });
 });
+
+describe("home hero", () => {
+  it("builds the hero from UI instead of pasting the brand photograph", async () => {
+    const home = await import("../components/home/HomeView");
+    const stage = await import("../components/home/HeroStage");
+    expect(home.HomeView.toString()).not.toContain("takiia-hero.jpg");
+    expect(stage.HeroStage.name).toBe("HeroStage");
+  });
+});
