@@ -11,6 +11,7 @@ const columns = [
       ["/messaging", "Messaging"],
       ["/meetings", "Meetings"],
       ["/social", "Social Media Management"],
+      ["/ads", "Google Ads"],
       ["/teams", "Team Collaboration"],
       ["/scheduling", "Calendar & Scheduling"],
       ["/files", "File Sharing"]
@@ -27,6 +28,7 @@ const columns = [
   {
     title: "Resources",
     links: [
+      ["/features", "Features"],
       ["/faq", "Help Center"],
       ["/contact", "Contact"],
       ["/security", "Security"]
@@ -37,7 +39,8 @@ const columns = [
     links: [
       ["/solutions", "About Takiia"],
       ["/contact", "Contact"],
-      ["/pricing", "Pricing"]
+      ["/pricing", "Pricing"],
+      ["/billing", "Billing"]
     ]
   }
 ] as const;

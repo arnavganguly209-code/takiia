@@ -36,7 +36,11 @@ const envSchema = z.object({
   LIVEKIT_API_SECRET: z.string().optional().default(""),
   TURN_URL: z.string().optional().default(""),
   TURN_USERNAME: z.string().optional().default(""),
-  TURN_PASSWORD: z.string().optional().default("")
+  TURN_PASSWORD: z.string().optional().default(""),
+  GOOGLE_ADS_ENABLED: booleanFlag,
+  GOOGLE_ADS_DEVELOPER_TOKEN: z.string().optional().default(""),
+  GOOGLE_ADS_CLIENT_ID: z.string().optional().default(""),
+  GOOGLE_ADS_CLIENT_SECRET: z.string().optional().default("")
 });
 
 export type ApiEnv = z.infer<typeof envSchema>;
@@ -80,6 +84,9 @@ export function featureFlagsFromEnv(env: ApiEnv) {
     webrtcCalls: Boolean(env.WEBRTC_CALLS_ENABLED && env.TURN_URL),
     livekitMeetings: Boolean(
       env.LIVEKIT_MEETINGS_ENABLED && env.LIVEKIT_URL && env.LIVEKIT_API_KEY && env.LIVEKIT_API_SECRET
+    ),
+    googleAds: Boolean(
+      env.GOOGLE_ADS_ENABLED && env.GOOGLE_ADS_DEVELOPER_TOKEN && env.GOOGLE_ADS_CLIENT_ID && env.GOOGLE_ADS_CLIENT_SECRET
     )
   };
 }

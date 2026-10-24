@@ -1,6 +1,6 @@
 export const site = {
   name: "Takiia",
-  tagline: "Bring conversations, online meetings, team collaboration, and social publishing together in one workspace.",
+  tagline: "Chat. Meet. Manage. All in One.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://127.0.0.1:3034"
 };
 
@@ -16,6 +16,7 @@ export const productLinks = [
   { href: "/messaging", label: "Messaging" },
   { href: "/meetings", label: "Meetings" },
   { href: "/social", label: "Social Media" },
+  { href: "/ads", label: "Google Ads" },
   { href: "/teams", label: "Team Collaboration" },
   { href: "/scheduling", label: "Calendar & Scheduling" },
   { href: "/files", label: "File Sharing" }
@@ -32,6 +33,7 @@ export const publicPaths = [
   "/messaging",
   "/meetings",
   "/social",
+  "/ads",
   "/teams",
   "/scheduling",
   "/files",

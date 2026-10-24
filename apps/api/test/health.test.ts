@@ -17,6 +17,7 @@ describe("health endpoints", () => {
     expect(response.status).toBe(200);
     expect(response.body.features.payments).toBe(false);
     expect(response.body.features.socialPublish).toBe(false);
+    expect(response.body.features.googleAds).toBe(false);
   });
 
   it("rejects unauthenticated private routes", async () => {

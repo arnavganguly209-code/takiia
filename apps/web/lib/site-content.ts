@@ -49,6 +49,7 @@ export type SiteContent = {
     workspace: SiteSection;
     messaging: SiteSection;
     social: SiteSection;
+    ads: SiteSection;
     meetings: SiteSection;
     teams: SiteSection;
     schedule: SiteSection;
@@ -81,7 +82,7 @@ export const defaultSiteContent: SiteContent = {
   brand: {
     name: "Takiia",
     logoSrc: "/brand/takiia-logo.png",
-    tagline: "Bring conversations, online meetings, team collaboration, and social publishing together in one workspace."
+    tagline: "Chat. Meet. Manage. All in One."
   },
   header: {
     productLabel: "Product",
@@ -98,6 +99,7 @@ export const defaultSiteContent: SiteContent = {
       { href: "/messaging", label: "Messaging" },
       { href: "/meetings", label: "Meetings" },
       { href: "/social", label: "Social Media" },
+      { href: "/ads", label: "Google Ads" },
       { href: "/teams", label: "Team Collaboration" },
       { href: "/scheduling", label: "Calendar & Scheduling" },
       { href: "/files", label: "File Sharing" }
@@ -110,32 +112,32 @@ export const defaultSiteContent: SiteContent = {
   hero: {
     eyebrow: "All-in-one workspace",
     line1: "Chat, Meet and",
-    line2: "Manage Social Media",
+    line2: "Manage Social Media & Ads",
     line3: "All in One Place.",
-    body: "Bring your conversations, online meetings, team collaboration and social publishing together in one simple workspace. Spend less time switching tools and more time getting work done.",
+    body: "Takiia brings messaging, online meetings, team collaboration, social media management, Google Ads, file sharing and scheduling together in one powerful workspace.",
     primaryLabel: "Get Started",
     primaryHref: "/signup",
-    secondaryLabel: "Watch Video",
+    secondaryLabel: "Watch Demo",
     secondaryHref: "#workspace",
     imageSrc: "/brand/takiia-hero-blend.jpg",
     imageAlt: "Takiia workspace on a laptop beside a team meeting on a phone",
-    features: ["Team Messaging", "Online Meetings", "Social Publishing", "Team Collaboration"]
+    features: ["Team Messaging", "Online Meetings", "Social Publishing", "Google Ads"]
   },
   capabilities: [
-    { href: "#messaging", label: "Messages" },
-    { href: "#meetings", label: "Meetings" },
+    { href: "#messaging", label: "Team Messaging" },
+    { href: "#meetings", label: "Online Meetings" },
     { href: "#social", label: "Social Media" },
-    { href: "#teams", label: "Teams" },
-    { href: "#files", label: "Files" },
-    { href: "#schedule", label: "Events" },
-    { href: "#workflow", label: "Notifications" },
-    { href: "#schedule", label: "Scheduling" }
+    { href: "#ads", label: "Google Ads" },
+    { href: "#files", label: "File Sharing" },
+    { href: "#schedule", label: "Scheduling" },
+    { href: "#messaging", label: "Group Chats" },
+    { href: "#workspace", label: "Analytics" }
   ],
   sections: {
     why: {
       eyebrow: "Why Takiia",
-      title: "Everything Your Team Needs, Without the Constant Switching.",
-      copy: "Bring conversations, meetings, social publishing and team collaboration into one organized workspace.",
+      title: "Everything Your Team Needs in One App.",
+      copy: "Disconnected chat, meetings, publishing, and ads force teams to rebuild context in every tab. Takiia keeps communication, meetings, marketing, and team workflows in one signed-in workspace.",
       note: "Takiia is one signed-in workspace. It does not replace every outside service, and it does not invent time-saved claims.",
       cards: [
         {
@@ -169,6 +171,19 @@ export const defaultSiteContent: SiteContent = {
         { title: "History and search", body: "Message history, pagination, search, and unread counts stay with the inbox." },
         { title: "Authenticated files", body: "Image and document attachments download only after a signed-in, authorized request." },
         { title: "Workspace access", body: "In-app notifications and server-side access controls follow workspace membership." }
+      ]
+    },
+    ads: {
+      eyebrow: "Google Ads management",
+      title: "Manage Your Google Ads Campaigns in One Workspace.",
+      copy: "Connect an authorized Google Ads account when a developer token and OAuth client exist. Advertising spend is billed by Google, not included in the Takiia subscription. No campaign is created or edited until the official API path is configured and the customer confirms the change.",
+      actionLabel: "Explore Google Ads",
+      actionHref: "/ads",
+      cards: [
+        { title: "Authorized connection", body: "OAuth, a developer token, and customer permissions are required before any account appears connected." },
+        { title: "Campaign review", body: "Status, budgets, and API-returned metrics stay empty until a live authorized account is linked." },
+        { title: "Spending safeguards", body: "Takiia will not launch a paid campaign or raise spend without explicit customer confirmation." },
+        { title: "Policy and quotas", body: "Google account, advertising-policy, billing, and API quota rules still apply after connection." }
       ]
     },
     social: {
@@ -233,7 +248,8 @@ export const defaultSiteContent: SiteContent = {
       cards: [
         { title: "Facebook", body: "Page and post publishing after official app review." },
         { title: "Instagram", body: "Supported media and permissions after official credentials." },
-        { title: "TikTok", body: "Account connection and publishing after official approval." }
+        { title: "TikTok", body: "Account connection and publishing after official approval." },
+        { title: "Google Ads", body: "Campaign review after an official developer token, OAuth client, and customer permission exist." }
       ]
     },
     workflow: {
@@ -288,12 +304,14 @@ export const defaultSiteContent: SiteContent = {
     { q: "Can I upgrade or cancel my plan?", a: "Plan records exist. Checkout, renewals, and cancellations stay pending until a payment provider is configured." },
     { q: "Are WhatsApp Business messages included?", a: "No. Takiia messaging is its own service and does not send WhatsApp messages." },
     { q: "How are attachments protected?", a: "Uploads use type and size checks. Downloads are authenticated and membership-checked. They are not public links." },
-    { q: "Which payment methods are supported?", a: "No payment provider is configured yet, so card, wallet, or invoice checkout is not offered." }
+    { q: "Which payment methods are supported?", a: "No payment provider is configured yet, so card, wallet, or invoice checkout is not offered." },
+    { q: "Can I manage Google Ads from Takiia?", a: "The workspace has an Ads area. Live campaign data and edits wait on a Google Ads developer token, OAuth, customer access, and confirmed API operations." },
+    { q: "Does the Takiia subscription include ad spend?", a: "No. Google Ads charges stay on the Google Ads account. Takiia only bills its own workspace plan once a payment provider is configured." }
   ],
   cta: {
     eyebrow: "Start in one workspace",
-    title: "Bring Your Conversations and Workflows Together.",
-    copy: "Manage communication, meetings, team collaboration and social publishing from one organized workspace.",
+    title: "Bring Your Entire Workflow Together.",
+    copy: "Manage communication, meetings, team collaboration, social publishing, and Google Ads setup from one organized workspace.",
     primaryLabel: "Get Started",
     primaryHref: "/signup",
     secondaryLabel: "View Pricing",
@@ -310,8 +328,9 @@ export const sectionOrder = [
   "why",
   "workspace",
   "messaging",
-  "social",
   "meetings",
+  "social",
+  "ads",
   "teams",
   "schedule",
   "files",

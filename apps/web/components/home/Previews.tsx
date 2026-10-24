@@ -24,6 +24,7 @@ export function WorkspacePreview() {
           <PreviewCard title="Scheduled posts" items={["3 queued sample posts", "Facebook and Instagram labels", "Publishing waits on credentials"]} />
           <PreviewCard title="Connected accounts" items={["Facebook · Not connected", "Instagram · Not connected", "TikTok · Not connected"]} />
           <PreviewCard title="Team activity" items={["Asha added a draft", "Rohit created a meeting"]} />
+          <PreviewCard title="Ad campaigns" items={["Sample campaign · Not connected", "Budgets stay on Google Ads", "No live spend shown"]} />
           <div className="rounded-2xl border border-line bg-mist p-4">
             <p className="text-sm font-semibold text-navy">October preview</p>
             <div className="mt-3 grid grid-cols-7 gap-1 text-center text-[10px] text-muted">
@@ -148,6 +149,40 @@ export function SocialPreview() {
             <polyline fill="none" stroke="currentColor" strokeWidth="3" points="0,50 40,42 80,48 120,28 160,34 220,18" />
           </svg>
           <p className="text-xs text-muted">Sample shape only. Live analytics wait on connected accounts.</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function AdsPreview() {
+  return (
+    <div className="overflow-hidden rounded-[1.75rem] border border-line bg-white shadow-glass">
+      <div className="border-b border-line px-5 py-3">
+        <DemoLabel>Google Ads preview · sample labels only · no live spend</DemoLabel>
+      </div>
+      <div className="grid gap-3 p-4 md:grid-cols-2">
+        <div className="rounded-2xl border border-line p-4">
+          <p className="text-sm font-semibold text-navy">Campaign list</p>
+          {[
+            ["Brand search", "Paused · awaiting account"],
+            ["Retargeting", "Not connected"],
+            ["Display", "Requires developer token"]
+          ].map(([name, state]) => (
+            <div key={name} className="mt-3 flex items-center justify-between rounded-xl bg-mist px-3 py-2">
+              <p className="text-sm font-semibold text-navy">{name}</p>
+              <span className="text-[11px] font-semibold text-muted">{state}</span>
+            </div>
+          ))}
+        </div>
+        <div className="rounded-2xl border border-line p-4">
+          <p className="text-sm font-semibold text-navy">Performance</p>
+          <p className="mt-3 text-sm leading-7 text-muted">
+            Impressions, clicks, conversions, and cost stay blank until the official Google Ads API returns them for an
+            authorized customer.
+          </p>
+          <div className="mt-4 h-16 rounded-xl bg-mist" />
+          <p className="mt-3 text-xs text-muted">Sample chart shape only. Not customer metrics.</p>
         </div>
       </div>
     </div>

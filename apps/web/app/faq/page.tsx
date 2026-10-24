@@ -15,7 +15,9 @@ const faqs = [
   ["Can I upgrade or cancel my plan?", "Plan records exist. Checkout stays pending until a payment provider is configured."],
   ["Are WhatsApp Business messages included?", "No. Messaging is native to the workspace."],
   ["How are attachments protected?", "Downloads are authenticated and membership-checked."],
-  ["Which payment methods are supported?", "None yet. No payment provider is configured."]
+  ["Which payment methods are supported?", "None yet. No payment provider is configured."],
+  ["Can I manage Google Ads from Takiia?", "The Ads area exists. Live data waits on official Google Ads API access."],
+  ["Does the subscription include ad spend?", "No. Google bills advertising separately from the Takiia plan."]
 ];
 
 export default function FaqPage() {

@@ -8,6 +8,7 @@ const items = [
   ["Workspaces", "Members, roles, and isolated queues per team. Cross-workspace access is denied on the server."],
   ["Meetings", "Calendar records and join attempts. Live media stays gated until TURN or LiveKit is verified."],
   ["Social", "Account and scheduled-post models for Facebook, Instagram, and TikTok. Publishing waits on official OAuth."],
+  ["Google Ads", "Workspace area and sample preview only. Live campaigns wait on a developer token, OAuth, and tested API operations. Ad spend stays on Google."],
   ["Files", "Type and size checks, storage quotas, and authenticated downloads."],
   ["Plans", "Quotas stored in PostgreSQL. Proposed list prices are defaults until a payment provider is configured."],
   ["Notifications", "In-app notices for workspace activity. Email delivery stays off without SMTP."],

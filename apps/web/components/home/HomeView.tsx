@@ -4,6 +4,7 @@ import { defaultSiteContent, type SiteContent, type SiteSection } from "@/lib/si
 import { FeatureCards } from "./FeatureCards";
 import { HomeHero } from "./HomeHero";
 import {
+  AdsPreview,
   CalendarPreview,
   FilesPreview,
   MeetingPreview,
@@ -98,6 +99,14 @@ export function HomeView({ content = defaultSiteContent }: { content?: SiteConte
         </div>
       </Section>
 
+      <Section id="meetings" eyebrow={s.meetings.eyebrow} title={s.meetings.title} copy={s.meetings.copy} action={actionOf(s.meetings)}>
+        <SectionImage src={s.meetings.imageSrc} />
+        <div className="grid items-start gap-8 lg:grid-cols-2">
+          <FeatureCards items={s.meetings.cards.map((card, index) => ({ ...card, ...cardLooks[index % cardLooks.length] }))} />
+          <MeetingPreview />
+        </div>
+      </Section>
+
       <Section id="social" tone="mist" eyebrow={s.social.eyebrow} title={s.social.title} copy={s.social.copy} action={actionOf(s.social)}>
         <SectionImage src={s.social.imageSrc} />
         <div className="grid items-start gap-8 lg:grid-cols-[0.9fr_1.1fr]">
@@ -106,11 +115,11 @@ export function HomeView({ content = defaultSiteContent }: { content?: SiteConte
         </div>
       </Section>
 
-      <Section id="meetings" eyebrow={s.meetings.eyebrow} title={s.meetings.title} copy={s.meetings.copy} action={actionOf(s.meetings)}>
-        <SectionImage src={s.meetings.imageSrc} />
+      <Section id="ads" eyebrow={s.ads.eyebrow} title={s.ads.title} copy={s.ads.copy} action={actionOf(s.ads)}>
+        <SectionImage src={s.ads.imageSrc} />
         <div className="grid items-start gap-8 lg:grid-cols-2">
-          <FeatureCards items={s.meetings.cards.map((card, index) => ({ ...card, ...cardLooks[index % cardLooks.length] }))} />
-          <MeetingPreview />
+          <FeatureCards items={s.ads.cards.map((card, index) => ({ ...card, ...cardLooks[index % cardLooks.length] }))} />
+          <AdsPreview />
         </div>
       </Section>
 
@@ -134,7 +143,7 @@ export function HomeView({ content = defaultSiteContent }: { content?: SiteConte
 
       <Section id="integrations" eyebrow={s.integrations.eyebrow} title={s.integrations.title} copy={s.integrations.copy}>
         <SectionImage src={s.integrations.imageSrc} />
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {s.integrations.cards.map((item, index) => (
             <article key={item.title} className="rounded-[1.6rem] border border-line bg-white p-7 shadow-soft">
               <span className={`flex h-12 w-12 items-center justify-center rounded-2xl text-lg font-black ${cardLooks[index % cardLooks.length].tile} ${cardLooks[index % cardLooks.length].ink}`}>

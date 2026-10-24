@@ -4,6 +4,19 @@
 
 :root {
   color-scheme: light;
+  --color-paper: #ffffff;
+  --color-mist: #f7faff;
+  --color-navy: #14264a;
+  --color-brand: #2563eb;
+  --color-cyan: #22c7e8;
+  --color-mint: #67e8c5;
+  --color-pale: #edf5ff;
+  --color-mintsoft: #e9fff6;
+  --color-ink: #1b2940;
+  --color-muted: #66758b;
+  --color-line: #e5ecf5;
+  --radius-lg: 1.6rem;
+  --shadow-soft: 0 10px 30px rgba(23, 59, 112, 0.06);
 }
 
 html {

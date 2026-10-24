@@ -41,5 +41,6 @@ describe("loadEnv", () => {
     expect(flags.payments).toBe(false);
     expect(flags.socialPublish).toBe(false);
     expect(flags.emailDelivery).toBe(false);
+    expect(flags.googleAds).toBe(false);
   });
 });

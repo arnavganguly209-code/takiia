@@ -80,6 +80,7 @@ export default function DashboardPage() {
         <DashLink href="/dashboard/inbox" title="Inbox" body="Conversations in the selected workspace." />
         <DashLink href="/dashboard/meetings" title="Meetings" body="Scheduled records. Media stays gated." />
         <DashLink href="/dashboard/social" title="Social queue" body="Drafts stored until providers connect." />
+        <DashLink href="/dashboard/ads" title="Google Ads" body="Unconfigured until official API credentials exist." />
       </div>
       <h2 className="mt-12 text-3xl font-semibold text-navy">Workspaces</h2>
       {workspaces.length === 0 ? (
